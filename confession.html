@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0d0804">
+<title>The Unsent Letter</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+  :root{
+    --ink:#2a1810;--ink-soft:#4a3528;--paper:#f4ead8;--paper-edge:#d9c9a8;
+    --wood:#3d2817;--wood-dark:#1f1208;--wax:#6b1c1c;--wax-light:#9a3030;
+    --flame:#ffb347;--flame-core:#fff4c4;--amber:#e8a84a;--room:#0a0603;
+    --ease:cubic-bezier(.22,1,.36,1);--ease-flap:cubic-bezier(.645,.045,.355,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;overflow-x:hidden;}
+  body{
+    min-height:100dvh;background:var(--room);color:var(--ink);
+    font-family:'Cormorant Garamond',Georgia,serif;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  /* ── Room & candlelight ── */
+  .scene{position:fixed;inset:0;overflow:hidden;}
+  .room{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 110%,rgba(80,45,15,.35),transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 0%,#1a1008 0%,var(--room) 70%);
+    opacity:1;transition:opacity 1.4s var(--ease);
+  }
+  .room-glow{
+    position:absolute;left:50%;top:28%;width:min(340px,85vw);height:min(340px,85vw);
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(255,170,60,.18) 0%,rgba(200,100,30,.06) 35%,transparent 65%);
+    pointer-events:none;opacity:0;transition:opacity 2s ease 1s;
+  }
+  .scene.phase-desk .room-glow,.scene.phase-letter .room-glow,.scene.phase-reading .room-glow{opacity:1;}
+  .candle{
+    position:absolute;left:50%;top:14%;transform:translateX(-50%) scale(.6);
+    opacity:0;transition:opacity 1.2s ease .6s,transform 1.2s var(--ease) .6s;
+    z-index:5;pointer-events:none;
+  }
+  .scene.phase-desk .candle,.scene.phase-letter .candle,.scene.phase-reading .candle{
+    opacity:1;transform:translateX(-50%) scale(1);
+  }
+  .candle-body{
+    width:14px;height:52px;margin:0 auto;
+    background:linear-gradient(90deg,#e8dcc8,#f5efe3 40%,#d4c4a8);
+    border-radius:3px 3px 6px 6px;
+    box-shadow:inset -2px 0 4px rgba(0,0,0,.12);
+  }
+  .candle-flame{
+    width:18px;height:28px;margin:-2px auto 0;
+    background:radial-gradient(ellipse at 50% 80%,var(--flame) 0%,#e06020 55%,transparent 72%);
+    border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    filter:blur(.3px);
+    animation:flicker 2.8s ease-in-out infinite;
+    box-shadow:0 0 22px rgba(255,150,50,.55),0 0 48px rgba(255,100,20,.25);
+  }
+  @keyframes flicker{
+    0%,100%{transform:scale(1) rotate(-1deg);opacity:.95;}
+    25%{transform:scale(1.06,.94) rotate(1deg);opacity:1;}
+    50%{transform:scale(.96,1.04) rotate(-2deg);opacity:.88;}
+    75%{transform:scale(1.03,.97) rotate(.5deg);opacity:.97;}
+  }
+
+  /* ── Intro whisper ── */
+  .intro{
+    position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:18px;padding:24px;
+    text-align:center;cursor:pointer;
+    transition:opacity .9s ease,visibility .9s;
+  }
+  .scene.phase-desk .intro,.scene.phase-letter .intro,.scene.phase-reading .intro{
+    opacity:0;visibility:hidden;pointer-events:none;
+  }
+  .intro p{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(1.1rem,4.5vw,1.35rem);color:rgba(244,234,216,.45);
+    letter-spacing:.04em;line-height:1.6;max-width:280px;
+  }
+  .intro-hint{
+    font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+    color:rgba(232,168,74,.35);animation:hintPulse 3s ease-in-out infinite;
+  }
+  @keyframes hintPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+  /* ── Wooden desk ── */
+  .desk{
+    position:absolute;left:0;right:0;bottom:0;height:42%;
+    background:
+      linear-gradient(180deg,transparent 0%,rgba(0,0,0,.5) 8%,transparent 12%),
+      repeating-linear-gradient(92deg,rgba(0,0,0,.04) 0 2px,transparent 2px 28px),
+      linear-gradient(175deg,#4a3020 0%,var(--wood) 30%,#2e1c10 70%,var(--wood-dark) 100%);
+    border-top:1px solid rgba(180,140,80,.12);
+    box-shadow:inset 0 8px 24px rgba(0,0,0,.35);
+    transform:translateY(100%);transition:transform 1.3s var(--ease) .2s;
+    z-index:2;
+  }
+  .desk::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(255,160,60,.08),transparent 60%);
+    pointer-events:none;
+  }
+  .scene.phase-desk .desk,.scene.phase-letter .desk,.scene.phase-reading .desk{
+    transform:translateY(0);
+  }
+
+  /* ── Stage ── */
+  .stage{
+    position:absolute;left:50%;bottom:18%;transform:translateX(-50%);
+    width:min(360px,92vw);height:min(420px,58vh);
+    perspective:1200px;perspective-origin:50% 30%;
+    z-index:10;
+    opacity:0;transition:opacity .8s ease 1s;
+  }
+  .scene.phase-desk .stage,.scene.phase-letter .stage,.scene.phase-reading .stage{opacity:1;}
+
+  /* ── Envelope ── */
+  .envelope{
+    position:absolute;left:50%;bottom:8%;transform:translateX(-50%);
+    width:min(300px,82vw);height:min(190px,44vw);
+    transform-style:preserve-3d;cursor:pointer;
+    transition:transform .9s var(--ease),opacity .7s ease;
+    animation:envBreathe 4s ease-in-out infinite;
+  }
+  @keyframes envBreathe{
+    0%,100%{transform:translateX(-50%) rotate(-.3deg);}
+    50%{transform:translateX(-50%) rotate(.4deg) translateY(-3px);}
+  }
+  .scene.phase-letter .envelope,.scene.phase-reading .envelope{
+    animation:none;opacity:0;pointer-events:none;
+    transform:translateX(-50%) translateY(30px) scale(.92);
+  }
+  .env-back{
+    position:absolute;inset:0;border-radius:4px;
+    background:linear-gradient(160deg,#e8dcc4,#d4c4a0);
+    box-shadow:0 4px 20px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .env-pocket{
+    position:absolute;left:0;right:0;bottom:0;height:62%;
+    background:linear-gradient(180deg,#c9b88e,#b8a478);
+    clip-path:polygon(0 0,50% 38%,100% 0,100% 100%,0 100%);
+    z-index:2;
+  }
+  .env-flap-wrap{
+    position:absolute;inset:0 0 auto;height:100%;z-index:4;
+    transform-style:preserve-3d;transform-origin:50% 0%;
+    transition:transform 1.1s var(--ease-flap);
+  }
+  .env-flap{
+    position:absolute;inset:0;
+    background:linear-gradient(175deg,#ede2c8,#d8c8a4);
+    clip-path:polygon(0 0,100% 0,50% 58%);
+    box-shadow:0 6px 16px rgba(0,0,0,.2);
+    backface-visibility:hidden;
+  }
+  .env-flap-wrap.open{transform:rotateX(-175deg);}
+  .wax-seal{
+    position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:46px;height:46px;border-radius:50%;z-index:6;
+    background:radial-gradient(circle at 38% 32%,var(--wax-light),var(--wax) 55%,#3d0e0e);
+    box-shadow:0 3px 10px rgba(0,0,0,.4),inset 0 2px 4px rgba(255,255,255,.15);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.1rem;
+    color:rgba(255,220,180,.75);letter-spacing:.05em;
+    transition:transform .5s var(--ease),opacity .4s ease;
+  }
+  .wax-seal.breaking{animation:sealBreak .55s var(--ease) forwards;}
+  @keyframes sealBreak{
+    0%{transform:translate(-50%,-50%) scale(1);}
+    40%{transform:translate(-50%,-50%) scale(1.15);}
+    100%{transform:translate(-50%,-50%) scale(0) rotate(20deg);opacity:0;}
+  }
+  .env-prompt{
+    position:absolute;left:50%;top:78%;transform:translateX(-50%);
+    font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
+    color:rgba(244,234,216,.4);white-space:nowrap;pointer-events:none;
+    transition:opacity .4s;
+  }
+  .scene.phase-letter .env-prompt{opacity:0;}
+
+  /* ── Letter ── */
+  .letter{
+    position:absolute;left:50%;bottom:6%;
+    width:min(320px,88vw);height:min(440px,62vh);
+    transform:translateX(-50%) translateY(80px) rotateX(12deg) scale(.78);
+    transform-style:preserve-3d;opacity:0;pointer-events:none;
+    transition:transform 1.2s var(--ease),opacity .6s ease;
+    z-index:15;
+  }
+  .scene.phase-letter .letter{
+    transform:translateX(-50%) translateY(-10px) rotateX(4deg) scale(.92);
+    opacity:1;
+  }
+  .scene.phase-reading .letter{
+    transform:translateX(-50%) translateY(-24px) rotateX(0deg) scale(1);
+    opacity:1;pointer-events:auto;
+  }
+  .letter-paper{
+    position:absolute;inset:0;border-radius:2px;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.12) 0%,transparent 6%),
+      repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(180,150,100,.08) 27px,rgba(180,150,100,.08) 28px),
+      linear-gradient(165deg,var(--paper) 0%,#ebe0cc 50%,#dfd0b4 100%);
+    box-shadow:0 2px 0 var(--paper-edge),0 20px 50px rgba(0,0,0,.5),0 4px 12px rgba(0,0,0,.25);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .letter-paper::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,rgba(180,140,80,.25),rgba(180,140,80,.08));
+  }
+  .letter-fold{
+    position:absolute;top:0;left:0;right:0;height:0;
+    background:linear-gradient(180deg,#e0d0b0,#f0e6d0);
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    transition:height 1s var(--ease) .3s;z-index:3;
+  }
+  .scene.phase-reading .letter-fold{height:0;}
+  .scene.phase-letter .letter-fold{height:38%;}
+
+  /* ── Letter content ── */
+  .letter-header{
+    padding:20px 22px 10px;display:flex;justify-content:space-between;align-items:flex-start;
+    border-bottom:1px solid rgba(42,24,16,.1);flex-shrink:0;position:relative;z-index:5;
+  }
+  .letter-to{
+    font-family:'Caveat',cursive;font-size:1.5rem;font-weight:600;color:var(--ink);
+    line-height:1.2;
+  }
+  .letter-to span{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:.75rem;font-weight:400;color:var(--ink-soft);letter-spacing:.12em;margin-top:2px;}
+  .page-dots{display:flex;gap:7px;padding-top:6px;}
+  .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:rgba(42,24,16,.15);border:1px solid rgba(42,24,16,.2);
+    cursor:pointer;transition:all .35s var(--ease);
+  }
+  .dot.active{background:var(--wax);border-color:var(--wax-light);transform:scale(1.35);
+    box-shadow:0 0 8px rgba(107,28,28,.35);}
+
+  .pages{flex:1;position:relative;overflow:hidden;z-index:5;}
+  .page{
+    position:absolute;inset:0;padding:18px 22px 14px;
+    display:flex;flex-direction:column;gap:10px;
+    opacity:0;transform:translateY(12px);pointer-events:none;
+    transition:opacity .5s var(--ease),transform .5s var(--ease);
+  }
+  .page.active{opacity:1;transform:none;pointer-events:auto;}
+
+  .page-label{
+    font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--amber);font-weight:500;
+  }
+  .page-title{
+    font-family:'Caveat',cursive;font-size:clamp(1.65rem,6vw,2rem);
+    font-weight:700;color:var(--ink);line-height:1.15;
+  }
+  .page-body{
+    font-size:1.05rem;color:var(--ink-soft);line-height:1.7;
+  }
+  .page-body .revealed{opacity:1;}
+  .page-body .char{opacity:0;display:inline;}
+  .page-body.revealing .char{animation:charIn .02s ease forwards;}
+  @keyframes charIn{to{opacity:1;}}
+  .ink-box{
+    margin-top:4px;padding:12px 14px;
+    border-left:2px solid var(--wax);
+    font-family:'Caveat',cursive;font-size:1.25rem;font-weight:600;
+    color:var(--ink);line-height:1.5;
+    background:rgba(107,28,28,.04);border-radius:0 4px 4px 0;
+    opacity:0;transform:translateX(-8px);
+    transition:opacity .6s ease .2s,transform .6s var(--ease) .2s;
+  }
+  .page.active .ink-box.show{opacity:1;transform:none;}
+
+  .photo-slide{
+    margin-top:auto;align-self:center;
+    width:min(200px,70%);aspect-ratio:4/3;border-radius:3px;
+    background:linear-gradient(135deg,#d4c4a8,#b8a888);
+    box-shadow:0 4px 16px rgba(0,0,0,.25),0 0 0 3px var(--paper),0 0 0 4px rgba(180,150,100,.3);
+    overflow:hidden;opacity:0;transform:translateY(24px) rotate(-2deg);
+    transition:opacity .7s var(--ease),transform .7s var(--ease);
+  }
+  .page.active .photo-slide.show{opacity:1;transform:translateY(0) rotate(-1deg);}
+  .photo-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-placeholder{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;
+    color:rgba(42,24,16,.35);
+  }
+
+  .letter-footer{
+    padding:12px 22px 18px;display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid rgba(42,24,16,.08);flex-shrink:0;position:relative;z-index:5;
+  }
+  .letter-from{
+    font-family:'Caveat',cursive;font-size:1.3rem;color:var(--ink-soft);
+  }
+  .nav-btn{
+    background:transparent;border:1px solid rgba(42,24,16,.2);
+    color:var(--ink-soft);font-family:'Cormorant Garamond',serif;
+    font-size:.78rem;letter-spacing:.08em;padding:6px 14px;border-radius:2px;
+    cursor:pointer;transition:all .3s ease;
+  }
+  .nav-btn:hover{border-color:var(--wax);color:var(--wax);}
+  .nav-btn:disabled{opacity:.25;cursor:default;}
+  .nav-btn.finale{border-color:var(--wax);color:var(--wax);font-style:italic;}
+
+  /* ── Finale calm overlay ── */
+  .finale-glow{
+    position:absolute;inset:0;pointer-events:none;z-index:30;
+    background:radial-gradient(ellipse at 50% 50%,rgba(255,180,80,.08),transparent 65%);
+    opacity:0;transition:opacity 1.5s ease;
+  }
+  .finale-glow.show{opacity:1;}
+
+  /* ── Audio toggle ── */
+  .audio-btn{
+    position:fixed;top:16px;right:16px;z-index:50;
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(20,12,6,.6);border:1px solid rgba(232,168,74,.2);
+    color:rgba(244,234,216,.5);font-size:.9rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s,border-color .3s;
+  }
+  .audio-btn:hover{border-color:rgba(232,168,74,.45);}
+  .audio-btn.unmuted{color:var(--amber);border-color:rgba(232,168,74,.5);}
+
+  /* ── Reduced motion ── */
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;}
+    .page-body .char{opacity:1!important;}
+    .intro-hint{animation:none;}
+    .envelope{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<button class="audio-btn" id="audioBtn" aria-label="Toggle ambient audio" title="Ambient sound">🔇</button>
+
+<div class="scene" id="scene">
+  <div class="room" aria-hidden="true"></div>
+  <div class="room-glow" aria-hidden="true"></div>
+
+  <div class="candle" aria-hidden="true">
+    <div class="candle-flame"></div>
+    <div class="candle-body"></div>
+  </div>
+
+  <div class="intro" id="intro" role="button" tabindex="0" aria-label="Enter the room">
+    <p>Somewhere in the dark,<br>a letter waits.</p>
+    <span class="intro-hint">Step closer</span>
+  </div>
+
+  <div class="desk" aria-hidden="true"></div>
+
+  <div class="stage">
+    <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the sealed letter">
+      <div class="env-back"></div>
+      <div class="env-pocket"></div>
+      <div class="env-flap-wrap" id="flapWrap">
+        <div class="env-flap"></div>
+      </div>
+      <div class="wax-seal" id="waxSeal"></div>
+      <span class="env-prompt" id="envPrompt">Tap the seal</span>
+    </div>
+
+    <div class="letter" id="letter">
+      <div class="letter-fold" aria-hidden="true"></div>
+      <div class="letter-paper">
+        <div class="letter-header">
+          <div class="letter-to" id="letterTo"></div>
+          <div class="page-dots" id="pageDots"></div>
+        </div>
+        <div class="pages" id="pages"></div>
+        <div class="letter-footer">
+          <button class="nav-btn" id="prevBtn" disabled>← Back</button>
+          <div class="letter-from" id="letterFrom"></div>
+          <button class="nav-btn" id="nextBtn">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finale-glow" id="finaleGlow" aria-hidden="true"></div>
+</div>
+
+<audio id="ambientAudio" loop preload="none"></audio>
+
+<script>
+/* =============================================
+   EXPERIENCE CONFIG — edit content here
+   ============================================= */
+const EXPERIENCE = {
+  recipient: 'Maya',
+  sender: '— someone who couldn\'t say it out loud',
+  promptLabel: 'Tap the seal',
+  sealInitials: 'Y',
+  audioSrc: '', // paste ambient audio URL, or leave empty
+  pages: [
+    {
+      label: 'What I never said',
+      title: 'I\'ve been carrying this.',
+      body: 'Not because I didn\'t care — but because I cared too much to risk saying it wrong. Every time I almost told you, the words turned to dust.',
+      box: null,
+      photo: null
+    },
+    {
+      label: 'The truth',
+      title: 'You changed everything.',
+      body: 'The way you laugh at things no one else notices. The quiet mornings. The way you made ordinary days feel like they meant something. I noticed all of it.',
+      box: 'I think about you when the room goes quiet.',
+      photo: null // e.g. 'assets/photo1.jpg'
+    },
+    {
+      label: 'This is it',
+      title: 'I love you.',
+      body: 'Not as a passing thought. Not as something I\'ll take back tomorrow. I love you — and this letter is the most honest I\'ve ever been.',
+      box: 'You don\'t have to answer. I just needed you to know.',
+      photo: null
+    }
+  ]
+};
+/* ============================================= */
+
+const scene = document.getElementById('scene');
+const intro = document.getElementById('intro');
+const envelope = document.getElementById('envelope');
+const flapWrap = document.getElementById('flapWrap');
+const waxSeal = document.getElementById('waxSeal');
+const letter = document.getElementById('letter');
+const pagesEl = document.getElementById('pages');
+const dotsEl = document.getElementById('pageDots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const finaleGlow = document.getElementById('finaleGlow');
+const audioBtn = document.getElementById('audioBtn');
+const ambientAudio = document.getElementById('ambientAudio');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+document.getElementById('letterTo').innerHTML = EXPERIENCE.recipient + '<span>dear</span>';
+document.getElementById('letterFrom').textContent = EXPERIENCE.sender;
+document.getElementById('envPrompt').textContent = EXPERIENCE.promptLabel;
+waxSeal.textContent = EXPERIENCE.sealInitials;
+
+if (EXPERIENCE.audioSrc) ambientAudio.src = EXPERIENCE.audioSrc;
+
+const total = EXPERIENCE.pages.length;
+let current = 0, phase = 'dark', opened = false, revealing = false;
+
+/* Build pages */
+EXPERIENCE.pages.forEach((p, i) => {
+  const page = document.createElement('div');
+  page.className = 'page' + (i === 0 ? ' active' : '');
+  page.dataset.i = i;
+  page.innerHTML =
+    '<div class="page-label">' + p.label + '</div>' +
+    '<div class="page-title">' + p.title + '</div>' +
+    '<div class="page-body" data-body></div>' +
+    (p.box ? '<div class="ink-box">' + p.box + '</div>' : '') +
+    (p.photo ? '<div class="photo-slide"><img src="' + p.photo + '" alt=""></div>' : '');
+  pagesEl.appendChild(page);
+
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', e => { e.stopPropagation(); goTo(i); });
+  dotsEl.appendChild(dot);
+});
+
+const pages = pagesEl.querySelectorAll('.page');
+const dots = dotsEl.querySelectorAll('.dot');
+
+/* Phase: dark → desk */
+function enterRoom() {
+  if (phase !== 'dark') return;
+  phase = 'desk';
+  scene.classList.add('phase-desk');
+}
+intro.addEventListener('click', enterRoom);
+intro.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterRoom(); } });
+
+/* Open envelope */
+function openEnvelope() {
+  if (opened || phase === 'dark') return;
+  opened = true;
+  waxSeal.classList.add('breaking');
+  const delay = reduceMotion ? 0 : 400;
+  setTimeout(() => {
+    flapWrap.classList.add('open');
+    phase = 'letter';
+    scene.classList.remove('phase-desk');
+    scene.classList.add('phase-letter');
+    setTimeout(() => {
+      scene.classList.remove('phase-letter');
+      scene.classList.add('phase-reading');
+      revealPage(0);
+    }, reduceMotion ? 100 : 1400);
+  }, delay);
+}
+envelope.addEventListener('click', openEnvelope);
+envelope.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
+
+/* Gradual text reveal */
+function revealPage(idx) {
+  if (revealing) return;
+  const page = pages[idx];
+  const bodyEl = page.querySelector('[data-body]');
+  const text = EXPERIENCE.pages[idx].body;
+  const inkBox = page.querySelector('.ink-box');
+  const photo = page.querySelector('.photo-slide');
+
+  bodyEl.classList.remove('revealing');
+  bodyEl.innerHTML = '';
+  if (inkBox) inkBox.classList.remove('show');
+  if (photo) photo.classList.remove('show');
+
+  if (reduceMotion) {
+    bodyEl.textContent = text;
+    if (inkBox) inkBox.classList.add('show');
+    if (photo) photo.classList.add('show');
+    return;
+  }
+
+  revealing = true;
+  const chars = text.split('');
+  chars.forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = ch;
+    span.style.animationDelay = (i * 28) + 'ms';
+    bodyEl.appendChild(span);
+  });
+  bodyEl.classList.add('revealing');
+
+  const done = chars.length * 28 + 200;
+  setTimeout(() => {
+    if (inkBox) inkBox.classList.add('show');
+    if (photo) setTimeout(() => photo.classList.add('show'), 300);
+    revealing = false;
+  }, done);
+}
+
+/* Navigation */
+function goTo(target) {
+  if (target === current || revealing || !opened) return;
+  pages[current].classList.remove('active');
+  current = target;
+  pages[current].classList.add('active');
+  syncNav();
+  revealPage(current);
+  if (current === total - 1) finaleGlow.classList.add('show');
+  else finaleGlow.classList.remove('show');
+}
+
+function syncNav() {
+  dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  prevBtn.disabled = current === 0;
+  const last = current === total - 1;
+  nextBtn.textContent = last ? 'Read again ↻' : 'Continue →';
+  nextBtn.classList.toggle('finale', last);
+}
+
+prevBtn.addEventListener('click', e => { e.stopPropagation(); if (current > 0) goTo(current - 1); });
+nextBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  if (current < total - 1) goTo(current + 1);
+  else goTo(0);
+});
+letter.addEventListener('click', e => {
+  if (!opened || revealing) return;
+  if (e.target.closest('.nav-btn') || e.target.closest('.dot')) return;
+  if (current < total - 1) goTo(current + 1);
+});
+
+/* Audio toggle */
+let audioOn = false;
+audioBtn.addEventListener('click', () => {
+  if (!EXPERIENCE.audioSrc) return;
+  audioOn = !audioOn;
+  audioBtn.textContent = audioOn ? '🔊' : '🔇';
+  audioBtn.classList.toggle('unmuted', audioOn);
+  audioOn ? ambientAudio.play().catch(() => {}) : ambientAudio.pause();
+});
+if (!EXPERIENCE.audioSrc) audioBtn.style.opacity = '.35';
+</script>
+</body>
+</html>

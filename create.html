@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your custom interactive digital experience with Moment. Tell us your story and we'll bring it to life.">
+  <meta name="theme-color" content="#0a0a0f">
+
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="create.css">
+  <title>Create Your Experience — Moment</title>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nav nav--scrolled" id="create-nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__back" aria-label="Back to home">
+        <span class="nav__back-icon">←</span> Back
+      </a>
+      <a href="index.html" class="nav__logo" data-brand>Moment</a>
+      <div class="nav__step-badge" id="step-badge">Step 1 of 10</div>
+    </div>
+  </header>
+
+  <!-- Draft Restore Banner -->
+  <div class="draft-banner is-hidden" id="draft-banner" role="alert">
+    <div class="draft-banner__content">
+      <span class="draft-banner__icon">💾</span>
+      <span class="draft-banner__text">You have an unfinished request saved.</span>
+    </div>
+    <div class="draft-banner__actions">
+      <button type="button" class="btn btn--ghost btn--sm" id="btn-restore-draft">Continue</button>
+      <button type="button" class="btn btn--text btn--sm" id="btn-discard-draft">Start Over</button>
+    </div>
+  </div>
+
+  <main class="create-main">
+    <div class="container create-container">
+      
+      <!-- Top Progress Bar -->
+      <div class="progress-bar-wrap" aria-hidden="true">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill" style="width: 10%;"></div>
+        </div>
+      </div>
+
+      <!-- Form Container -->
+      <form id="experience-form" class="create-form" novalidate>
+
+        <!-- STEP 1: OCCASION -->
+        <section class="form-step form-step--active" data-step="1" id="step-1">
+          <div class="step-header">
+            <span class="step-number">01 / 10</span>
+            <h1 class="step-title">What are we making?</h1>
+            <p class="step-subtitle">Choose the kind of experience you want us to create.</p>
+          </div>
+
+          <div class="options-grid options-grid--occasions" id="occasion-options">
+            <button type="button" class="option-card" data-occasion="romantic">
+              <span class="option-card__icon">❤️</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Romantic</strong>
+                <span class="option-card__desc">Soft light, slow reveals, and words that land.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="apology">
+              <span class="option-card__icon">🥀</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Apology</strong>
+                <span class="option-card__desc">When "I'm sorry" isn't enough.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="birthday">
+              <span class="option-card__icon">😂</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Birthday</strong>
+                <span class="option-card__desc">Make their birthday unforgettable.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="yearWrapped">
+              <span class="option-card__icon">🎬</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">New Year / Year Wrapped</strong>
+                <span class="option-card__desc">Your year, told like a film.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="confession">
+              <span class="option-card__icon">💌</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Confession</strong>
+                <span class="option-card__desc">Say what you've been afraid to say.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="friendship">
+              <span class="option-card__icon">🫂</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Friendship</strong>
+                <span class="option-card__desc">Inside jokes turned into something real.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="wedding">
+              <span class="option-card__icon">💍</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Wedding</strong>
+                <span class="option-card__desc">Turn an invitation into an experience.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="farewell">
+              <span class="option-card__icon">🎓</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Farewell</strong>
+                <span class="option-card__desc">Send them off with something they'll cherish.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="anniversary">
+              <span class="option-card__icon">✨</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Anniversary</strong>
+                <span class="option-card__desc">Every chapter of your story, alive.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="memories">
+              <span class="option-card__icon">🎧</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Memories / Soundtrack</strong>
+                <span class="option-card__desc">A soundtrack to your favorite moments.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="justBecause">
+              <span class="option-card__icon">🌌</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Just Because</strong>
+                <span class="option-card__desc">No reason needed to make them smile.</span>
+              </div>
+            </button>
+
+            <button type="button" class="option-card" data-occasion="other">
+              <span class="option-card__icon">🕵️</span>
+              <div class="option-card__text">
+                <strong class="option-card__title">Something Else</strong>
+                <span class="option-card__desc">A custom idea you have in mind.</span>
+              </div>
+            </button>
+          </div>
+          <div class="field-error-msg" id="error-step-1">Please select an occasion to continue.</div>
+        </section>
+
+        <!-- STEP 2: ABOUT THEM -->
+        <section class="form-step" data-step="2" id="step-2">
+          <div class="step-header">
+            <span class="step-number">02 / 10</span>
+            <h2 class="step-title">Who are we making this for?</h2>
+            <p class="step-subtitle">Help us get a feel for who they are.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="recipient-name">Recipient's Name <span class="required-star">*</span></label>
+            <input type="text" id="recipient-name" class="form-control" placeholder="e.g. Sarah, Alex, Mom..." required>
+            <div class="field-error-msg" id="error-recipient-name">Please enter their name.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">What's your relationship with them?</label>
+            <div class="chips-grid" id="relationship-chips">
+              <button type="button" class="chip-btn" data-rel="Partner">Partner</button>
+              <button type="button" class="chip-btn" data-rel="Crush">Crush</button>
+              <button type="button" class="chip-btn" data-rel="Best friend">Best friend</button>
+              <button type="button" class="chip-btn" data-rel="Friend">Friend</button>
+              <button type="button" class="chip-btn" data-rel="Sibling">Sibling</button>
+              <button type="button" class="chip-btn" data-rel="Parent">Parent</button>
+              <button type="button" class="chip-btn" data-rel="Family">Family</button>
+              <button type="button" class="chip-btn" data-rel="Colleague">Colleague</button>
+              <button type="button" class="chip-btn" data-rel="Other">Other</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="recipient-personality">What are they like?</label>
+            <textarea id="recipient-personality" class="form-control" rows="3" placeholder="Funny, emotional, football obsessed, always late..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="recipient-additional">Anything else we should know about them? <span class="optional-tag">(Optional)</span></label>
+            <textarea id="recipient-additional" class="form-control" rows="2" placeholder="Any specific traits, favorite things, or details..."></textarea>
+          </div>
+        </section>
+
+        <!-- STEP 3: THEIR STORY -->
+        <section class="form-step" data-step="3" id="step-3">
+          <div class="step-header">
+            <span class="step-number">03 / 10</span>
+            <h2 class="step-title">Their Story</h2>
+            <p class="step-subtitle">Tell us about them. We'll turn your story into an experience.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="story-memory">What's one memory you'll never forget?</label>
+            <textarea id="story-memory" class="form-control" rows="3" placeholder="That night we stayed up talking until 4 AM..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="story-special">What makes them special to you?</label>
+            <textarea id="story-special" class="form-control" rows="3" placeholder="The way she always listens even when she's having a terrible day..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="story-jokes">Any inside jokes, nicknames or random things only you two understand?</label>
+            <textarea id="story-jokes" class="form-control" rows="2" placeholder="The chai incident 😂"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="story-message">What do you want to say to them?</label>
+            <textarea id="story-message" class="form-control form-control--large" rows="5" placeholder="Write whatever you've been holding back. Your exact words will shape the experience."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="story-notes">Anything else we should know? <span class="optional-tag">(Optional)</span></label>
+            <textarea id="story-notes" class="form-control" rows="2" placeholder="Extra context, background story, or instructions..."></textarea>
+          </div>
+        </section>
+
+        <!-- STEP 4: FEELING -->
+        <section class="form-step" data-step="4" id="step-4">
+          <div class="step-header">
+            <span class="step-number">04 / 10</span>
+            <h2 class="step-title">How should it feel?</h2>
+            <p class="step-subtitle">Set the emotional tone of the experience.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Overall Vibe / Mood <span class="hint-tag">(Select all that apply)</span></label>
+            <div class="chips-grid" id="mood-chips">
+              <button type="button" class="chip-btn" data-mood="❤️ Romantic">❤️ Romantic</button>
+              <button type="button" class="chip-btn" data-mood="🥹 Emotional">🥹 Emotional</button>
+              <button type="button" class="chip-btn" data-mood="😂 Funny">😂 Funny</button>
+              <button type="button" class="chip-btn" data-mood="😭 Apologetic">😭 Apologetic</button>
+              <button type="button" class="chip-btn" data-mood="✨ Wholesome">✨ Wholesome</button>
+              <button type="button" class="chip-btn" data-mood="🔥 Chaotic">🔥 Chaotic</button>
+              <button type="button" class="chip-btn" data-mood="🌙 Deep">🌙 Deep</button>
+              <button type="button" class="chip-btn" data-mood="🎀 Cute">🎀 Cute</button>
+              <button type="button" class="chip-btn" data-mood="🎬 Cinematic">🎬 Cinematic</button>
+              <button type="button" class="chip-btn" data-mood="🤍 Minimal">🤍 Minimal</button>
+              <button type="button" class="chip-btn" data-mood="💀 Roast">💀 Roast</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">What should they feel when they finish?</label>
+            <div class="chips-grid" id="reaction-chips">
+              <button type="button" class="chip-btn" data-reaction="Loved">Loved</button>
+              <button type="button" class="chip-btn" data-reaction="Emotional">Emotional</button>
+              <button type="button" class="chip-btn" data-reaction="Surprised">Surprised</button>
+              <button type="button" class="chip-btn" data-reaction="Laughing">Laughing</button>
+              <button type="button" class="chip-btn" data-reaction="Nostalgic">Nostalgic</button>
+              <button type="button" class="chip-btn" data-reaction="Special">Special</button>
+              <button type="button" class="chip-btn" data-reaction="Speechless">Speechless</button>
+            </div>
+          </div>
+
+          <div class="form-group slider-group">
+            <div class="slider-header">
+              <label class="form-label" for="intensity-slider">How intense should it be?</label>
+              <span class="slider-val-badge" id="intensity-val-label">Balanced</span>
+            </div>
+            <input type="range" id="intensity-slider" class="range-slider" min="1" max="5" value="3" step="1">
+            <div class="slider-labels">
+              <span>Subtle</span>
+              <span>FULL EMOTIONAL DAMAGE</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 5: PHOTOS -->
+        <section class="form-step" data-step="5" id="step-5">
+          <div class="step-header">
+            <span class="step-number">05 / 10</span>
+            <h2 class="step-title">Photos & Videos</h2>
+            <p class="step-subtitle">Your package determines what media can be included.</p>
+          </div>
+
+          <div class="media-whatsapp-card" id="media-whatsapp-card">
+            <div class="media-whatsapp-card__intro">
+              <span class="media-whatsapp-card__icon" aria-hidden="true">📸</span>
+              <div>
+                <h3>What happens with your media?</h3>
+                <p id="media-notice-text">Photos are included with Memories and photos + videos are included with Cinematic.</p>
+              </div>
+            </div>
+
+            <div class="media-package-options" aria-label="Media included by package">
+              <div class="media-package-card" data-media-package="essential" aria-current="false">
+                <span class="media-package-card__name">ESSENTIAL</span>
+                <span class="media-package-card__price">₹99</span>
+                <span class="media-package-card__detail">Media not included</span>
+              </div>
+
+              <div class="media-package-card" data-media-package="memories" aria-current="false">
+                <span class="media-package-card__name">MEMORIES</span>
+                <span class="media-package-card__price">₹149</span>
+                <span class="media-package-card__detail">Photos included</span>
+              </div>
+
+              <div class="media-package-card" data-media-package="cinematic" aria-current="false">
+                <span class="media-package-card__name">CINEMATIC</span>
+                <span class="media-package-card__price">₹199</span>
+                <span class="media-package-card__detail">Photos + videos included</span>
+              </div>
+            </div>
+
+            <div class="media-whatsapp-card__selected">
+              <span class="media-whatsapp-card__check" aria-hidden="true">✓</span>
+              <div>
+                <strong id="media-selected-package">MEMORIES — ₹149</strong>
+                <p id="media-status-text">No uploads needed here.</p>
+              </div>
+            </div>
+
+            <div class="media-whatsapp-card__action">
+              <strong>No uploads needed here.</strong>
+              <p>After you submit your request, we'll contact you on WhatsApp and you'll send your photos/videos directly to us.</p>
+            </div>
+          </div>
+
+          <p class="privacy-note">
+            <span class="privacy-icon">🔒</span> Your media is collected privately through WhatsApp after we contact you.
+          </p>
+        </section>
+
+        <!-- STEP 6: STYLE -->
+        <section class="form-step" data-step="6" id="step-6">
+          <div class="step-header">
+            <span class="step-number">06 / 10</span>
+            <h2 class="step-title">Give it a vibe.</h2>
+            <p class="step-subtitle">Select the visual aesthetic for your experience.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Visual Style</label>
+            <div class="chips-grid" id="style-chips">
+              <button type="button" class="chip-btn" data-style="🎬 Cinematic">🎬 Cinematic</button>
+              <button type="button" class="chip-btn" data-style="🤍 Minimal">🤍 Minimal</button>
+              <button type="button" class="chip-btn" data-style="🎀 Cute">🎀 Cute</button>
+              <button type="button" class="chip-btn" data-style="✨ Elegant">✨ Elegant</button>
+              <button type="button" class="chip-btn" data-style="🌙 Dark">🌙 Dark</button>
+              <button type="button" class="chip-btn" data-style="🌈 Playful">🌈 Playful</button>
+              <button type="button" class="chip-btn" data-style="📜 Vintage">📜 Vintage</button>
+              <button type="button" class="chip-btn" data-style="❤️ Romantic">❤️ Romantic</button>
+              <button type="button" class="chip-btn" data-style="🔥 Chaotic">🔥 Chaotic</button>
+              <button type="button" class="chip-btn" data-style="🎲 Surprise Me">🎲 Surprise Me</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Color Preference</label>
+            <div class="chips-grid" id="color-chips">
+              <button type="button" class="chip-btn" data-color="Let us choose">Let us choose</button>
+              <button type="button" class="chip-btn" data-color="Dark">Dark</button>
+              <button type="button" class="chip-btn" data-color="Warm">Warm</button>
+              <button type="button" class="chip-btn" data-color="Pastel">Pastel</button>
+              <button type="button" class="chip-btn" data-color="Black & White">Black & White</button>
+              <button type="button" class="chip-btn" data-color="Romantic">Romantic</button>
+              <button type="button" class="chip-btn" data-color="Custom">Custom</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="special-requests">Anything you definitely want included?</label>
+            <textarea id="special-requests" class="form-control" rows="3" placeholder='e.g. "Make it football themed.", "Use an anime aesthetic.", "Don't use pink.", "Include our chai joke."'></textarea>
+          </div>
+        </section>
+
+        <!-- STEP 7: PACKAGE -->
+        <section class="form-step" data-step="7" id="step-7">
+          <div class="step-header">
+            <span class="step-number">07 / 10</span>
+            <h2 class="step-title">Choose your experience.</h2>
+            <p class="step-subtitle">Select the package that fits your moment.</p>
+          </div>
+
+          <div class="packages-grid" id="packages-grid">
+            <!-- ESSENTIAL -->
+            <div class="package-card" data-package="essential">
+              <div class="package-card__header">
+                <h3 class="package-card__title">ESSENTIAL</h3>
+                <div class="package-card__price">₹99</div>
+              </div>
+              <p class="package-card__tagline">"Your story, turned into an interactive experience."</p>
+              <ul class="package-card__features">
+                <li>✓ Personalized experience</li>
+                <li>✓ Custom content</li>
+                <li>✓ Interactive animations</li>
+                <li>✓ Shareable link</li>
+                <li>✓ QR code</li>
+                <li class="feature-disabled">✕ No customer photos</li>
+              </ul>
+              <button type="button" class="btn btn--ghost package-card__btn">Choose Essential</button>
+            </div>
+
+            <!-- MEMORIES -->
+            <div class="package-card package-card--popular" data-package="memories">
+              <div class="package-badge">Most Popular</div>
+              <div class="package-card__header">
+                <h3 class="package-card__title">MEMORIES</h3>
+                <div class="package-card__price">₹149</div>
+              </div>
+              <p class="package-card__tagline">"Bring your favorite memories into it."</p>
+              <ul class="package-card__features">
+                <li>✓ Everything in Essential</li>
+                <li>✓ Personalized photos</li>
+                <li>✓ Photo/memory sections</li>
+                <li>✓ Custom photo interactions</li>
+                <li>✓ Shareable link</li>
+                <li>✓ QR code</li>
+              </ul>
+              <button type="button" class="btn btn--primary package-card__btn">Choose Memories</button>
+            </div>
+
+            <!-- CINEMATIC -->
+            <div class="package-card" data-package="cinematic">
+              <div class="package-card__header">
+                <h3 class="package-card__title">CINEMATIC</h3>
+                <div class="package-card__price">₹199</div>
+              </div>
+              <p class="package-card__tagline">"Turn it into a full multimedia experience."</p>
+              <ul class="package-card__features">
+                <li>✓ Everything in Memories</li>
+                <li>✓ Photo integration</li>
+                <li>✓ Cinematic treatment</li>
+                <li>✓ Advanced visual sections</li>
+                <li>✓ Shareable link</li>
+                <li>✓ QR code</li>
+              </ul>
+              <button type="button" class="btn btn--ghost package-card__btn">Choose Cinematic</button>
+            </div>
+          </div>
+
+          <div class="price-breakdown-card" id="price-breakdown">
+            <div class="price-breakdown__banner">Only ₹50 to get started.</div>
+            <div class="price-breakdown__rows">
+              <div class="price-row">
+                <span>Total Package Amount</span>
+                <strong id="calc-total">₹149</strong>
+              </div>
+              <div class="price-row price-row--highlight">
+                <span>Advance Required Now</span>
+                <strong id="calc-advance">₹50</strong>
+              </div>
+              <div class="price-row">
+                <span>Remaining Before Final Delivery</span>
+                <strong id="calc-remaining">₹99</strong>
+              </div>
+            </div>
+          </div>
+          <div class="field-error-msg" id="error-step-7">Please select a package to continue.</div>
+        </section>
+
+        <!-- STEP 8: DELIVERY -->
+        <section class="form-step" data-step="8" id="step-8">
+          <div class="step-header">
+            <span class="step-number">08 / 10</span>
+            <h2 class="step-title">Where should we send it?</h2>
+            <p class="step-subtitle">We'll contact you on WhatsApp with delivery and payment details.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="customer-name">Your Name <span class="required-star">*</span></label>
+            <input type="text" id="customer-name" class="form-control" placeholder="Your full name" required>
+            <div class="field-error-msg" id="error-customer-name">Please enter your name.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="customer-whatsapp">WhatsApp Number <span class="required-star">*</span></label>
+            <input type="tel" id="customer-whatsapp" class="form-control" placeholder="e.g. +91 9876543210" required>
+            <div class="field-error-msg" id="error-customer-whatsapp">Please enter a valid WhatsApp number.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="customer-email">Email Address <span class="optional-tag">(Optional)</span></label>
+            <input type="email" id="customer-email" class="form-control" placeholder="name@example.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="customer-deadline">Date Needed / Deadline <span class="optional-tag">(Optional)</span></label>
+            <input type="date" id="customer-deadline" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Preferred Delivery Method</label>
+            <div class="chips-grid" id="delivery-chips">
+              <button type="button" class="chip-btn chip-btn--selected" data-delivery="WhatsApp">WhatsApp</button>
+              <button type="button" class="chip-btn" data-delivery="Email">Email</button>
+              <button type="button" class="chip-btn" data-delivery="Both">Both</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 9: REVIEW -->
+        <section class="form-step" data-step="9" id="step-9">
+          <div class="step-header">
+            <span class="step-number">09 / 10</span>
+            <h2 class="step-title">Review Your Request</h2>
+            <p class="step-subtitle">Double check your details before submitting.</p>
+          </div>
+
+          <div class="review-card" id="review-card">
+            <!-- Review items dynamically populated by create.js -->
+          </div>
+
+          <div class="clear-responses-wrap">
+            <button type="button" class="btn-clear-responses" id="btn-clear-responses">Clear all responses</button>
+          </div>
+        </section>
+
+        <!-- STEP 10: SUBMIT & PAYMENT -->
+        <section class="form-step" data-step="10" id="step-10">
+          <!-- State 1: Submit Ready -->
+          <div class="submit-state" id="submit-state-ready">
+            <div class="step-header text-center">
+              <span class="step-number">10 / 10</span>
+              <h1 class="step-title">Ready to make it?</h1>
+              <p class="step-subtitle">You give us the story. We'll turn it into something they'll remember.</p>
+            </div>
+
+            <div class="submit-action-box">
+              <button type="button" class="btn btn--primary btn--large btn--full" id="btn-submit-order">
+                Submit My Request →
+              </button>
+            </div>
+          </div>
+
+          <!-- State 1.5: Submission Error Screen -->
+          <div class="submit-error-state is-hidden" id="submit-error-state">
+            <div class="payment-card" style="border-color: rgba(232, 93, 138, 0.5);">
+              <span class="payment-icon">⚠️</span>
+              <h2 class="payment-title">We couldn't send your request yet.</h2>
+              <p class="payment-subtitle" id="error-message-text">Please check your internet connection or try again. Your form responses are safe.</p>
+              <div class="payment-action-wrap">
+                <button type="button" class="btn btn--primary btn--large btn--full" id="btn-retry-submit">
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 2: Payment / Advance Screen (Shows after submission) -->
+          <div class="payment-state is-hidden" id="payment-state">
+            <div class="payment-card">
+              <div class="payment-card__header">
+                <span class="payment-icon">❤️</span>
+                <h2 class="payment-title">You're almost there.</h2>
+                <p class="payment-subtitle">Your request has been received. A ₹50 advance starts your order.</p>
+              </div>
+
+              <div class="payment-amount-box">
+                <span class="payment-label">ADVANCE PAYMENT</span>
+                <div class="payment-amount">₹50</div>
+              </div>
+
+              <div class="payment-action-wrap">
+                <button type="button" class="btn btn--primary btn--large btn--full" id="btn-pay-advance">
+                  Pay ₹50 Advance →
+                </button>
+                <div class="payment-notice-text" id="payment-notice-text">
+                  We'll start creating your experience after the ₹50 advance. The remaining balance is due before final delivery.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 3: Final Confirmation Screen -->
+          <div class="confirmation-state is-hidden" id="confirmation-state">
+            <div class="confirmation-card">
+              <div class="confirmation-icon">✨</div>
+              <h2 class="confirmation-title">Your request is in. ❤️</h2>
+              <p class="confirmation-lead">Now the fun part begins.</p>
+              <p class="confirmation-body">
+                We'll contact you on WhatsApp with the next steps.
+              </p>
+              <div class="confirmation-cta">
+                <a href="index.html" class="btn btn--ghost">Return to Home</a>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Sticky Bottom Navigation Bar -->
+  <footer class="create-bar" id="create-bar">
+    <div class="container create-bar__inner">
+      <button type="button" class="btn btn--ghost" id="btn-prev" style="visibility: hidden;">
+        ← Back
+      </button>
+
+      <div class="create-bar__status">
+        <span class="create-bar__step-text" id="bar-step-text">Step 1 of 10</span>
+        <div class="create-bar__dots" id="bar-dots"></div>
+      </div>
+
+      <button type="button" class="btn btn--primary" id="btn-next">
+        Next →
+      </button>
+    </div>
+  </footer>
+
+  <script src="create.js"></script>
+</body>
+</html>

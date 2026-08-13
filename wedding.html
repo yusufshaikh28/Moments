@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2a2318">
+<title>Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#faf6ef;
+  --ivory-deep:#f0e8d8;
+  --champagne:#e8dcc8;
+  --champagne-dark:#d4c4a8;
+  --gold:#b8963e;
+  --gold-light:#d4b86a;
+  --gold-dark:#8a6f2e;
+  --ink:#2a2318;
+  --ink-soft:#5c5040;
+  --wax:#6b1c24;
+  --wax-dark:#4a1018;
+  --wax-highlight:#9a3040;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --shadow:0 12px 48px rgba(42,35,24,.22);
+  --paper-texture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  min-height:100dvh;font-family:'Cormorant Garamond',Georgia,serif;color:var(--ink);
+  background:radial-gradient(ellipse at 50% 20%,#3d3428 0%,#1a1610 70%);
+  overflow-x:hidden;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* ── Closed invitation ── */
+.envelope-stage{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 30%,#3d3428,#14100c);
+  transition:opacity .8s var(--ease),visibility .8s;
+  perspective:1200px;
+}
+.envelope-stage.hidden{opacity:0;visibility:hidden;pointer-events:none}
+
+.fold-wrap{
+  position:relative;width:min(92vw,380px);height:min(72vh,520px);
+  transform-style:preserve-3d;
+}
+.fold-wrap.opening .fold-top{transform:rotateX(-168deg)}
+.fold-wrap.opening .fold-bottom{transform:rotateX(168deg)}
+.fold-wrap.opening .fold-left{transform:rotateY(168deg)}
+.fold-wrap.opening .fold-right{transform:rotateY(-168deg)}
+.fold-wrap.opened .fold-panel{opacity:0;pointer-events:none}
+
+.fold-panel{
+  position:absolute;background:var(--ivory);
+  background-image:
+    radial-gradient(ellipse at 30% 20%,rgba(184,150,62,.06),transparent 55%),
+    radial-gradient(ellipse at 70% 80%,rgba(212,196,168,.12),transparent 50%),
+    var(--paper-texture);
+  border:1px solid var(--champagne-dark);
+  box-shadow:inset 0 0 30px rgba(42,35,24,.04);
+  transition:transform 1.2s var(--ease),opacity .6s var(--ease) .8s;
+  transform-origin:center;
+}
+.fold-top{top:0;left:0;right:0;height:50%;transform-origin:bottom center;z-index:2;border-bottom:1px dashed var(--champagne)}
+.fold-bottom{bottom:0;left:0;right:0;height:50%;transform-origin:top center;z-index:2;border-top:1px dashed var(--champagne)}
+.fold-left{top:0;bottom:0;left:0;width:50%;transform-origin:right center;z-index:1;border-right:1px dashed var(--champagne)}
+.fold-right{top:0;bottom:0;right:0;width:50%;transform-origin:left center;z-index:1;border-left:1px dashed var(--champagne)}
+
+.fold-center{
+  position:absolute;inset:12%;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--ivory-deep);
+  background-image:var(--paper-texture);
+  border:1px solid var(--champagne-dark);
+  box-shadow:var(--shadow);
+  padding:1.5rem;
+  text-align:center;
+}
+.fold-center::before,.fold-center::after{
+  content:'';position:absolute;width:24px;height:24px;
+  border:1px solid var(--gold);opacity:.45;
+}
+.fold-center::before{top:10px;left:10px;border-right:none;border-bottom:none}
+.fold-center::after{bottom:10px;right:10px;border-left:none;border-top:none}
+
+.fold-eyebrow{
+  font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--gold-dark);margin-bottom:.75rem;
+}
+.fold-hint{
+  font-size:.95rem;font-style:italic;color:var(--ink-soft);
+  margin-top:1.25rem;opacity:.8;
+}
+
+/* ── Wax seal ── */
+.wax-seal{
+  position:relative;width:88px;height:88px;border:none;background:none;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:transform .35s var(--ease);
+  animation:sealPulse 3s ease-in-out infinite;
+}
+.wax-seal:hover,.wax-seal:focus-visible{transform:scale(1.06);outline:none}
+.wax-seal:active{transform:scale(.96)}
+.wax-seal svg{width:100%;height:100%;filter:drop-shadow(0 4px 12px rgba(74,16,24,.45))}
+@keyframes sealPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.03)}
+}
+
+/* ── Open invitation ── */
+.invitation{
+  opacity:0;transform:translateY(24px);
+  transition:opacity 1s var(--ease) .3s,transform 1s var(--ease) .3s;
+  min-height:100dvh;
+}
+.invitation.visible{opacity:1;transform:translateY(0)}
+
+.section{
+  min-height:100dvh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:3rem 1.5rem 4rem;
+  position:relative;
+  scroll-snap-align:start;
+  background:var(--ivory);
+  background-image:
+    radial-gradient(ellipse at 20% 10%,rgba(184,150,62,.05),transparent 50%),
+    radial-gradient(ellipse at 80% 90%,rgba(212,196,168,.1),transparent 45%),
+    var(--paper-texture);
+}
+.section::before{
+  content:'';position:absolute;inset:12px;
+  border:1px solid var(--champagne-dark);pointer-events:none;opacity:.5;
+}
+.section::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:min(88%,340px);height:1px;
+  background:linear-gradient(90deg,transparent,var(--champagne-dark),transparent);
+  opacity:0;
+}
+.section:not(:first-child)::after{opacity:.6}
+
+.scroll-container{
+  height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;
+  scrollbar-width:thin;scrollbar-color:var(--gold) transparent;
+}
+.scroll-container::-webkit-scrollbar{width:4px}
+.scroll-container::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── Typography & ornaments ── */
+.ornament{
+  font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:1rem;
+}
+.ornament-line{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;
+}
+.ornament-line::before,.ornament-line::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-light),transparent);
+}
+.ornament-line span{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:var(--gold-dark)}
+
+.names-display{
+  font-family:'Cinzel',serif;font-weight:500;
+  font-size:clamp(2rem,9vw,3rem);line-height:1.2;
+  color:var(--ink);text-align:center;
+}
+.names-display .amp{
+  display:block;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-weight:400;font-size:.55em;
+  color:var(--gold);margin:.35rem 0;
+}
+
+.date-display{
+  text-align:center;
+}
+.date-main{
+  font-family:'Cinzel',serif;font-size:clamp(1.4rem,5.5vw,2rem);
+  font-weight:500;color:var(--ink);letter-spacing:.06em;
+}
+.date-sub{
+  font-size:clamp(1.1rem,4vw,1.35rem);font-style:italic;
+  color:var(--ink-soft);margin-top:.5rem;
+}
+
+.venue-block{text-align:center;max-width:320px}
+.venue-name{
+  font-family:'Cinzel',serif;font-size:clamp(1.25rem,4.5vw,1.65rem);
+  font-weight:500;color:var(--ink);margin-bottom:.75rem;
+}
+.venue-address{
+  font-size:clamp(1.05rem,3.8vw,1.2rem);line-height:1.55;
+  color:var(--ink-soft);
+}
+.venue-map-link{
+  display:inline-block;margin-top:1.25rem;
+  font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold-dark);
+  text-decoration:none;border-bottom:1px solid var(--champagne-dark);
+  padding-bottom:2px;transition:color .3s,border-color .3s;
+}
+.venue-map-link:hover,.venue-map-link:focus-visible{color:var(--gold);border-color:var(--gold);outline:none}
+
+/* ── Events ── */
+.events-list{
+  width:100%;max-width:340px;display:flex;flex-direction:column;gap:1.25rem;
+}
+.event-card{
+  padding:1.25rem 1.5rem;
+  background:rgba(255,255,255,.35);
+  border:1px solid var(--champagne);
+  position:relative;
+}
+.event-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold-dark));
+}
+.event-time{
+  font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.12em;
+  color:var(--gold-dark);margin-bottom:.35rem;
+}
+.event-title{
+  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:500;
+  color:var(--ink);margin-bottom:.25rem;
+}
+.event-desc{
+  font-size:1rem;line-height:1.45;color:var(--ink-soft);font-style:italic;
+}
+
+/* ── Gallery ── */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem;
+  width:100%;max-width:360px;
+}
+.gallery-item{
+  aspect-ratio:1;overflow:hidden;border:1px solid var(--champagne);
+  background:var(--champagne);position:relative;
+}
+.gallery-item:first-child{grid-column:span 2;aspect-ratio:16/10}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s var(--ease);
+}
+.gallery-item:hover img,.gallery-item:focus-within img{transform:scale(1.04)}
+
+/* ── RSVP ── */
+.rsvp-block{text-align:center;max-width:320px}
+.rsvp-text{
+  font-size:clamp(1.1rem,4vw,1.3rem);line-height:1.6;
+  color:var(--ink-soft);margin-bottom:2rem;font-style:italic;
+}
+.rsvp-btn{
+  display:inline-block;
+  font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;
+  text-transform:uppercase;text-decoration:none;
+  padding:1rem 2.5rem;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));
+  color:var(--ivory);border:none;cursor:pointer;
+  box-shadow:0 4px 20px rgba(184,150,62,.35);
+  transition:transform .3s var(--ease),box-shadow .3s;
+  -webkit-tap-highlight-color:transparent;
+}
+.rsvp-btn:hover,.rsvp-btn:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(184,150,62,.45);outline:none;
+}
+.rsvp-btn:active{transform:translateY(0)}
+
+.scroll-hint{
+  position:fixed;bottom:max(1.5rem,env(safe-area-inset-bottom));
+  left:50%;transform:translateX(-50%);z-index:50;
+  font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);
+  opacity:.7;pointer-events:none;
+  transition:opacity .5s;
+  animation:hintBounce 2.5s ease-in-out infinite;
+}
+.scroll-hint.hidden{opacity:0}
+@keyframes hintBounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(6px)}
+}
+
+.progress-dots{
+  position:fixed;right:max(.75rem,env(safe-area-inset-right));top:50%;
+  transform:translateY(-50%);z-index:50;
+  display:flex;flex-direction:column;gap:.5rem;
+  opacity:0;transition:opacity .6s var(--ease);
+}
+.progress-dots.visible{opacity:1}
+.progress-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--champagne-dark);border:1px solid var(--gold);
+  transition:background .3s,transform .3s;
+}
+.progress-dot.active{background:var(--gold);transform:scale(1.3)}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .wax-seal{animation:none}
+  .scroll-hint{animation:none}
+  .fold-panel,.invitation,.envelope-stage{transition-duration:.01ms!important}
+  .fold-wrap.opening .fold-top,
+  .fold-wrap.opening .fold-bottom,
+  .fold-wrap.opening .fold-left,
+  .fold-wrap.opening .fold-right{transform:none}
+  .fold-wrap.opened .fold-panel{display:none}
+  .gallery-item img{transition:none}
+}
+
+@media(min-width:480px){
+  .section{padding:4rem 2rem 5rem}
+  .gallery-grid{gap:.85rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Closed invitation with wax seal -->
+<div class="envelope-stage" id="envelopeStage" aria-hidden="false">
+  <div class="fold-wrap" id="foldWrap">
+    <div class="fold-panel fold-top" aria-hidden="true"></div>
+    <div class="fold-panel fold-bottom" aria-hidden="true"></div>
+    <div class="fold-panel fold-left" aria-hidden="true"></div>
+    <div class="fold-panel fold-right" aria-hidden="true"></div>
+    <div class="fold-center">
+      <p class="fold-eyebrow">You are cordially invited</p>
+      <button class="wax-seal" id="waxSeal" aria-label="Break the wax seal to open invitation">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <defs>
+            <radialGradient id="waxGrad" cx="38%" cy="32%" r="65%">
+              <stop offset="0%" stop-color="#a83040"/>
+              <stop offset="45%" stop-color="#6b1c24"/>
+              <stop offset="100%" stop-color="#3a0a10"/>
+            </radialGradient>
+            <filter id="waxTex">
+              <feTurbulence type="fractalNoise" baseFrequency=".12" numOctaves="3" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </defs>
+          <circle cx="50" cy="50" r="44" fill="url(#waxGrad)" filter="url(#waxTex)"/>
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#4a1018" stroke-width="1" opacity=".4"/>
+          <ellipse cx="38" cy="32" rx="18" ry="12" fill="#fff" opacity=".08" transform="rotate(-20 38 32)"/>
+          <text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-size="22" fill="#d4b86a" id="sealInitials">&amp;</text>
+        </svg>
+      </button>
+      <p class="fold-hint">Tap the seal to open</p>
+    </div>
+  </div>
+</div>
+
+<!-- Open invitation sections -->
+<div class="invitation" id="invitation" aria-hidden="true">
+  <div class="scroll-container" id="scrollContainer">
+    <section class="section" id="sectionNames" data-section="names">
+      <div class="ornament-line"><span>Together</span></div>
+      <div class="names-display" id="namesDisplay"></div>
+    </section>
+
+    <section class="section" id="sectionDate" data-section="date">
+      <p class="ornament">Save the Date</p>
+      <div class="date-display" id="dateDisplay"></div>
+    </section>
+
+    <section class="section" id="sectionVenue" data-section="venue">
+      <p class="ornament">The Venue</p>
+      <div class="venue-block" id="venueDisplay"></div>
+    </section>
+
+    <section class="section" id="sectionEvents" data-section="events">
+      <p class="ornament">Celebration</p>
+      <div class="events-list" id="eventsList"></div>
+    </section>
+
+    <section class="section" id="sectionGallery" data-section="gallery">
+      <p class="ornament">Our Story</p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+    <section class="section" id="sectionRsvp" data-section="rsvp">
+      <p class="ornament">Répondez</p>
+      <div class="rsvp-block">
+        <p class="rsvp-text">We would be honoured by your presence<br>as we begin this new chapter together.</p>
+        <a class="rsvp-btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Kindly Respond</a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<p class="scroll-hint hidden" id="scrollHint">Scroll</p>
+<nav class="progress-dots" id="progressDots" aria-hidden="true"></nav>
+
+<script>
+/* ========== EXPERIENCE CONFIG ========== */
+const EXPERIENCE = {
+  couple: ['Eleanor', 'James'],
+  date: {
+    main: 'Saturday, the Fourteenth of June',
+    year: 'Two Thousand Twenty-Six',
+    time: 'Half past four in the afternoon'
+  },
+  venue: {
+    name: 'The Rosewood Estate',
+    address: '1842 Willow Lane, Napa Valley, California',
+    mapUrl: 'https://maps.google.com'
+  },
+  events: [
+    { time: '4:30 PM', title: 'Ceremony', description: 'Garden terrace overlooking the vineyards' },
+    { time: '6:00 PM', title: 'Cocktail Hour', description: 'Champagne and canapés on the veranda' },
+    { time: '7:30 PM', title: 'Reception & Dinner', description: 'An evening of dining and dancing under the stars' }
+  ],
+  gallery: [
+    { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80', alt: 'Couple walking together' },
+    { src: 'https://images.unsplash.com/photo-1522673607200-16483ebebf4b?w=600&q=80', alt: 'Engagement moment' },
+    { src: 'https://images.unsplash.com/photo-1465495976277-81edcbfc2b01?w=600&q=80', alt: 'Hands intertwined' },
+    { src: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80', alt: 'Celebration toast' },
+    { src: 'https://images.unsplash.com/photo-1469371670807-b013dd17b219?w=600&q=80', alt: 'Sunset embrace' }
+  ],
+  rsvpUrl: 'https://example.com/rsvp'
+};
+/* ======================================= */
+
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const envelopeStage = document.getElementById('envelopeStage');
+const foldWrap = document.getElementById('foldWrap');
+const waxSeal = document.getElementById('waxSeal');
+const invitation = document.getElementById('invitation');
+const scrollContainer = document.getElementById('scrollContainer');
+const scrollHint = document.getElementById('scrollHint');
+const progressDots = document.getElementById('progressDots');
+
+const sections = [
+  document.getElementById('sectionNames'),
+  document.getElementById('sectionDate'),
+  document.getElementById('sectionVenue'),
+  document.getElementById('sectionEvents'),
+  document.getElementById('sectionGallery'),
+  document.getElementById('sectionRsvp')
+];
+
+function init() {
+  document.title = EXPERIENCE.couple.join(' & ') + ' — Wedding';
+
+  const initials = EXPERIENCE.couple.map(n => n.charAt(0)).join('');
+  document.getElementById('sealInitials').textContent = initials || '&';
+
+  const [a, b] = EXPERIENCE.couple;
+  document.getElementById('namesDisplay').innerHTML =
+    `${escapeHtml(a)}<span class="amp">&amp;</span>${escapeHtml(b)}`;
+
+  document.getElementById('dateDisplay').innerHTML = `
+    <p class="date-main">${escapeHtml(EXPERIENCE.date.main)}</p>
+    <p class="date-sub">${escapeHtml(EXPERIENCE.date.year)}</p>
+    <p class="date-sub">${escapeHtml(EXPERIENCE.date.time)}</p>`;
+
+  const v = EXPERIENCE.venue;
+  document.getElementById('venueDisplay').innerHTML = `
+    <p class="venue-name">${escapeHtml(v.name)}</p>
+    <p class="venue-address">${escapeHtml(v.address)}</p>
+    ${v.mapUrl ? `<a class="venue-map-link" href="${escapeAttr(v.mapUrl)}" target="_blank" rel="noopener">View on map</a>` : ''}`;
+
+  document.getElementById('eventsList').innerHTML = EXPERIENCE.events.map(e => `
+    <article class="event-card">
+      <p class="event-time">${escapeHtml(e.time)}</p>
+      <h3 class="event-title">${escapeHtml(e.title)}</h3>
+      ${e.description ? `<p class="event-desc">${escapeHtml(e.description)}</p>` : ''}
+    </article>`).join('');
+
+  const gallery = EXPERIENCE.gallery || [];
+  const gallerySection = document.getElementById('sectionGallery');
+  if (gallery.length) {
+    document.getElementById('galleryGrid').innerHTML = gallery.map(g => `
+      <div class="gallery-item">
+        <img src="${escapeAttr(g.src)}" alt="${escapeAttr(g.alt || '')}" loading="lazy" decoding="async">
+      </div>`).join('');
+  } else {
+    gallerySection.style.display = 'none';
+  }
+
+  document.getElementById('rsvpBtn').href = EXPERIENCE.rsvpUrl || '#';
+
+  buildProgressDots();
+  waxSeal.addEventListener('click', openInvitation);
+  waxSeal.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInvitation(); } });
+  scrollContainer.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function buildProgressDots() {
+  const visible = sections.filter(s => s.style.display !== 'none');
+  progressDots.innerHTML = visible.map((_, i) =>
+    `<span class="progress-dot${i === 0 ? ' active' : ''}" data-index="${i}"></span>`
+  ).join('');
+  progressDots.querySelectorAll('.progress-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = +dot.dataset.index;
+      visible[idx]?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+}
+
+let opened = false;
+function openInvitation() {
+  if (opened) return;
+  opened = true;
+
+  if (reduceMotion) {
+    foldWrap.classList.add('opened');
+    envelopeStage.classList.add('hidden');
+    envelopeStage.setAttribute('aria-hidden', 'true');
+    invitation.classList.add('visible');
+    invitation.setAttribute('aria-hidden', 'false');
+    scrollHint.classList.remove('hidden');
+    progressDots.classList.add('visible');
+    progressDots.setAttribute('aria-hidden', 'false');
+    return;
+  }
+
+  foldWrap.classList.add('opening');
+  setTimeout(() => foldWrap.classList.add('opened'), 1200);
+  setTimeout(() => {
+    envelopeStage.classList.add('hidden');
+    envelopeStage.setAttribute('aria-hidden', 'true');
+    invitation.classList.add('visible');
+    invitation.setAttribute('aria-hidden', 'false');
+    scrollHint.classList.remove('hidden');
+    progressDots.classList.add('visible');
+    progressDots.setAttribute('aria-hidden', 'false');
+  }, 900);
+}
+
+function onScroll() {
+  const visible = sections.filter(s => s.style.display !== 'none');
+  const scrollTop = scrollContainer.scrollTop;
+  const vh = scrollContainer.clientHeight;
+  let active = 0;
+  visible.forEach((sec, i) => {
+    const top = sec.offsetTop;
+    if (scrollTop >= top - vh * 0.4) active = i;
+  });
+  progressDots.querySelectorAll('.progress-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === active);
+  });
+  if (scrollTop > 60) scrollHint.classList.add('hidden');
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+function escapeAttr(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+init();
+</script>
+</body>
+</html>

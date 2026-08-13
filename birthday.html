@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Birthday Roast — Arcade</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a12;--crt:#0d1f0d;--green:#39ff14;--green-dim:#1a8f12;--amber:#ffb000;--pink:#ff6ec7;--cyan:#00e5ff;--scan:rgba(0,0,0,.12);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'VT323',monospace;background:var(--bg);color:var(--green);display:flex;align-items:center;justify-content:center;}
+.cabinet{width:min(400px,100vw);height:100dvh;max-height:932px;display:flex;flex-direction:column;background:linear-gradient(180deg,#1a1a2e,#0f0f18);position:relative;}
+.cabinet::before{content:'';position:absolute;inset:8px;border:3px solid #2a2a40;border-radius:12px;pointer-events:none;z-index:5;}
+.hud{display:flex;justify-content:space-between;padding:14px 18px 8px;font-family:'Press Start 2P',monospace;font-size:.45rem;color:var(--amber);z-index:10;flex-shrink:0;}
+.hud span{color:var(--green);}
+.screen-wrap{flex:1;margin:0 14px 14px;position:relative;border-radius:8px;overflow:hidden;border:4px solid #1a1a28;box-shadow:inset 0 0 60px rgba(0,0,0,.8),0 0 20px rgba(57,255,20,.08);}
+.screen{position:absolute;inset:0;background:var(--crt);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;text-align:center;overflow-y:auto;}
+.screen::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scan) 2px,var(--scan) 4px);pointer-events:none;z-index:20;animation:scanroll 8s linear infinite;}
+@keyframes scanroll{to{background-position:0 4px;}}
+.screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.45));pointer-events:none;z-index:19;}
+.crt-content{position:relative;z-index:10;width:100%;max-width:320px;}
+.pixel-title{font-family:'Press Start 2P',monospace;font-size:clamp(.55rem,3.2vw,.7rem);line-height:1.8;color:var(--pink);text-shadow:0 0 10px var(--pink);margin-bottom:1.5rem;}
+.pixel-sub{font-size:1.35rem;color:var(--cyan);margin-bottom:1rem;line-height:1.3;}
+.pixel-body{font-size:1.25rem;line-height:1.45;color:var(--green);margin-bottom:1.2rem;}
+.pixel-box{border:2px dashed var(--amber);padding:12px;font-size:1.15rem;color:var(--amber);margin:1rem 0;line-height:1.4;}
+.level-banner{font-family:'Press Start 2P',monospace;font-size:.5rem;color:var(--cyan);letter-spacing:.1em;margin-bottom:.5rem;}
+.btn-arcade{
+  font-family:'Press Start 2P',monospace;font-size:.5rem;padding:14px 20px;
+  background:var(--green-dim);color:#000;border:3px solid var(--green);
+  cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 #000;
+  transition:transform .1s,box-shadow .1s;-webkit-tap-highlight-color:transparent;
+  margin-top:.5rem;
+}
+.btn-arcade:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000;}
+.btn-arcade--pink{background:#8f2060;border-color:var(--pink);color:#fff;}
+.coin-slot{font-size:2.5rem;margin:1rem 0;animation:coinBlink 1.2s step-end infinite;}
+@keyframes coinBlink{50%{opacity:.4;}}
+.profile-box{border:2px solid var(--cyan);padding:16px;margin:1rem 0;text-align:left;}
+.profile-row{font-size:1.2rem;margin:.35rem 0;display:flex;gap:8px;}
+.profile-row span:first-child{color:var(--amber);min-width:90px;}
+.score-pop{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Press Start 2P',monospace;font-size:1rem;color:var(--amber);animation:scoreUp .8s ease forwards;pointer-events:none;z-index:30;}
+@keyframes scoreUp{0%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-120%) scale(1.4);}}
+.controls{display:flex;gap:10px;justify-content:center;padding:12px 14px 20px;flex-shrink:0;}
+.arcade-btn{width:56px;height:56px;border-radius:50%;border:4px solid #333;background:radial-gradient(circle at 35% 30%,#ff4444,#aa1111);box-shadow:0 6px 0 #550000,0 8px 12px rgba(0,0,0,.5);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.arcade-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #550000;}
+.arcade-btn--b{background:radial-gradient(circle at 35% 30%,#4488ff,#1144aa);box-shadow:0 6px 0 #002255,0 8px 12px rgba(0,0,0,.5);}
+.arcade-btn--b:active{box-shadow:0 2px 0 #002255;}
+.flash-overlay{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:25;transition:opacity .15s;}
+.flash-overlay.on{opacity:.25;}
+.hidden{display:none!important;}
+.particles{position:absolute;inset:0;pointer-events:none;z-index:15;overflow:hidden;}
+.particle{position:absolute;font-size:.8rem;animation:pixFall linear forwards;}
+@keyframes pixFall{to{transform:translateY(110vh) rotate(360deg);opacity:0;}}
+@media(prefers-reduced-motion:reduce){.screen::after,.coin-slot,.particle{animation:none!important;}}
+</style>
+</head>
+<body>
+<div class="cabinet">
+  <div class="hud">
+    <span>SCORE <span id="score">0</span></span>
+    <span>LIVES <span id="lives">♥♥♥</span></span>
+    <span>LV <span id="level">00</span></span>
+  </div>
+  <div class="screen-wrap">
+    <div class="flash-overlay" id="flash"></div>
+    <div class="particles" id="particles"></div>
+    <div class="screen" id="screen"></div>
+  </div>
+  <div class="controls">
+    <button class="arcade-btn" id="btnA" aria-label="A button"></button>
+    <button class="arcade-btn arcade-btn--b" id="btnB" aria-label="B button"></button>
+  </div>
+</div>
+<script>
+/* ========== EXPERIENCE CONFIG ========== */
+const EXPERIENCE = {
+  recipient: 'ALEX',
+  sender: 'THE SQUAD',
+  title: 'BIRTHDAY ROAST',
+  subtitle: 'PLAYER ONE',
+  levels: [
+    { type:'intro', label:'INSERT COIN', title:'PRESS START', body:'Someone made a game about you.\nGood luck.' },
+    { type:'profile', label:'PLAYER PROFILE', title:'' },
+    { type:'level', num:1, label:'LEVEL 01', title:'THE ROAST', body:'You are officially the person who says "five more minutes" and disappears for forty-five.', box:'EVIDENCE: 47 unread "where are you?" texts' },
+    { type:'level', num:2, label:'LEVEL 02', title:'MEMORIES', body:'Remember when you tried to cook pasta and set off the smoke alarm? We do. We all do.', box:null },
+    { type:'bonus', label:'BONUS ROUND', title:'ACHIEVEMENT UNLOCKED', body:'Survived another year of your nonsense. Respect.', box:'+1000 FRIENDSHIP POINTS' },
+    { type:'boss', label:'FINAL BOSS', title:'THE TRUTH', body:'Under all the chaos, you\'re the one we call first. Don\'t let it go to your head.', box:null },
+    { type:'finale', label:'GAME OVER?', title:'HAPPY BIRTHDAY', body:'You win. Barely.\nNow go eat cake.', box:'— ' }
+  ]
+};
+/* ======================================= */
+
+const screen = document.getElementById('screen');
+const scoreEl = document.getElementById('score');
+const levelEl = document.getElementById('level');
+const flash = document.getElementById('flash');
+let step = 0, score = 0;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function render(){
+  const s = EXPERIENCE.levels[step];
+  if(!s) return;
+  levelEl.textContent = s.num ? String(s.num).padStart(2,'0') : '00';
+
+  if(s.type === 'intro'){
+    screen.innerHTML = `
+      <div class="crt-content">
+        <div class="coin-slot">🪙</div>
+        <p class="pixel-title">${s.label}</p>
+        <p class="pixel-sub">${s.title}</p>
+        <p class="pixel-body">${s.body.replace(/\n/g,'<br>')}</p>
+        <button class="btn-arcade" id="nextBtn">START ▶</button>
+      </div>`;
+  } else if(s.type === 'profile'){
+    screen.innerHTML = `
+      <div class="crt-content">
+        <p class="level-banner">${s.label}</p>
+        <div class="profile-box">
+          <div class="profile-row"><span>NAME:</span> ${EXPERIENCE.recipient}</div>
+          <div class="profile-row"><span>CLASS:</span> CHAOS MAGE</div>
+          <div class="profile-row"><span>HP:</span> ██████░░░░</div>
+          <div class="profile-row"><span>WEAKNESS:</span> CAKE</div>
+          <div class="profile-row"><span>TEAM:</span> ${EXPERIENCE.sender}</div>
+        </div>
+        <button class="btn-arcade" id="nextBtn">READY ▶</button>
+      </div>`;
+  } else if(s.type === 'finale'){
+    screen.innerHTML = `
+      <div class="crt-content">
+        <p class="level-banner">${s.label}</p>
+        <p class="pixel-title" style="color:var(--amber)">${s.title}</p>
+        <p class="pixel-body">${EXPERIENCE.recipient}!!!</p>
+        <p class="pixel-body">${s.body.replace(/\n/g,'<br>')}</p>
+        <p class="pixel-box">${s.box}${EXPERIENCE.sender}</p>
+        <button class="btn-arcade btn-arcade--pink" id="nextBtn">PLAY AGAIN ↻</button>
+      </div>`;
+    launchParticles();
+  } else {
+    screen.innerHTML = `
+      <div class="crt-content">
+        <p class="level-banner">${s.label}</p>
+        <p class="pixel-sub">${s.title}</p>
+        <p class="pixel-body">${s.body}</p>
+        ${s.box ? `<p class="pixel-box">${s.box}</p>` : ''}
+        <button class="btn-arcade" id="nextBtn">NEXT ▶</button>
+      </div>`;
+    if(s.type === 'boss') flashOnce();
+  }
+
+  document.getElementById('nextBtn')?.addEventListener('click', advance);
+}
+
+function advance(){
+  if(step < EXPERIENCE.levels.length - 1){
+    step++;
+    score += step * 250;
+    scoreEl.textContent = score;
+    popScore();
+    render();
+  } else {
+    step = 0; score = 0; scoreEl.textContent = '0';
+    render();
+  }
+}
+
+function popScore(){
+  const el = document.createElement('div');
+  el.className = 'score-pop';
+  el.textContent = '+' + (step * 250);
+  document.querySelector('.screen-wrap').appendChild(el);
+  setTimeout(() => el.remove(), 800);
+}
+
+function flashOnce(){
+  if(reduceMotion) return;
+  flash.classList.add('on');
+  setTimeout(() => flash.classList.remove('on'), 150);
+}
+
+function launchParticles(){
+  if(reduceMotion) return;
+  const host = document.getElementById('particles');
+  const chars = ['★','♦','●','▲','■'];
+  for(let i=0;i<30;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = chars[i%chars.length];
+    p.style.left = Math.random()*100+'%';
+    p.style.color = ['var(--pink)','var(--cyan)','var(--amber)','var(--green)'][i%4];
+    p.style.animationDuration = (1.5+Math.random()*2)+'s';
+    p.style.animationDelay = Math.random()*0.5+'s';
+    host.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+}
+
+document.getElementById('btnA').addEventListener('click', advance);
+document.getElementById('btnB').addEventListener('click', advance);
+render();
+</script>
+</body>
+</html>

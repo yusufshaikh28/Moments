@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3d2914">
+<title>Our Journey — Anniversary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parchment:#f0e2c4;--parchment-dark:#dcc9a3;--ink:#2c1810;--ink-soft:#5c4030;
+  --route:#8b4513;--route-glow:#c17a3a;--stamp:#7a1f1f;--gold:#9a7b2e;
+  --ease:cubic-bezier(.22,1,.36,1);--shadow:0 8px 32px rgba(44,24,16,.28);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  min-height:100dvh;font-family:'Libre Baskerville',Georgia,serif;color:var(--ink);
+  background:#1a1208;display:flex;align-items:center;justify-content:center;
+  overflow-x:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.app{width:100%;max-width:480px;min-height:100dvh;position:relative;overflow:hidden}
+
+/* ── Intro cover ── */
+.cover{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 30%,#2a1e0e,#0f0a04);
+  transition:opacity .9s var(--ease),visibility .9s;
+}
+.cover.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.cover-inner{text-align:center;padding:2rem;max-width:340px}
+.cover-stamp{
+  width:88px;height:88px;margin:0 auto 1.5rem;border:3px double var(--gold);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'IM Fell English',serif;font-size:2rem;color:var(--gold);
+  transform:rotate(-12deg);opacity:.85;
+  animation:stampIn .8s var(--ease) .2s both;
+}
+@keyframes stampIn{from{transform:rotate(-12deg) scale(1.4);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:.85}}
+.cover h1{
+  font-family:'IM Fell English',serif;font-size:clamp(2rem,8vw,2.6rem);
+  font-weight:400;color:var(--parchment);line-height:1.15;margin-bottom:.5rem;
+}
+.cover .sub{font-size:.85rem;color:var(--parchment-dark);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2rem}
+.cover-btn{
+  font-family:'Libre Baskerville',serif;font-size:.9rem;letter-spacing:.08em;
+  padding:.85rem 2rem;border:1px solid var(--gold);background:transparent;
+  color:var(--parchment);cursor:pointer;border-radius:2px;transition:background .3s,color .3s;
+}
+.cover-btn:hover,.cover-btn:focus-visible{background:var(--gold);color:var(--ink);outline:none}
+
+/* ── Map stage ── */
+.stage{
+  min-height:100dvh;display:flex;flex-direction:column;
+  background:var(--parchment);
+  background-image:
+    radial-gradient(ellipse at 20% 80%,rgba(139,105,20,.08),transparent 50%),
+    radial-gradient(ellipse at 80% 20%,rgba(139,69,19,.06),transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:0;transform:scale(.97);transition:opacity 1s var(--ease),transform 1s var(--ease);
+}
+.stage.visible{opacity:1;transform:scale(1)}
+
+.header{padding:1.25rem 1.25rem .5rem;text-align:center;position:relative}
+.header::after{
+  content:'';display:block;width:60%;height:1px;margin:.75rem auto 0;
+  background:linear-gradient(90deg,transparent,var(--ink-soft),transparent);
+}
+.header h2{font-family:'IM Fell English',serif;font-size:1.5rem;font-weight:400}
+.header .meta{font-size:.72rem;color:var(--ink-soft);letter-spacing:.1em;margin-top:.25rem}
+
+/* ── Map canvas ── */
+.map-wrap{flex:1;position:relative;margin:0 .75rem .75rem;border:2px solid var(--ink-soft);
+  box-shadow:inset 0 0 40px rgba(44,24,16,.08),var(--shadow);overflow:hidden;
+  background:linear-gradient(160deg,#ede0c0 0%,#e8d5aa 40%,#dcc99a 100%);
+  min-height:min(62vh,420px);border-radius:2px;
+}
+.map-wrap::before,.map-wrap::after{
+  content:'';position:absolute;width:28px;height:28px;border:2px solid var(--ink-soft);pointer-events:none;z-index:5;
+}
+.map-wrap::before{top:6px;left:6px;border-right:none;border-bottom:none}
+.map-wrap::after{bottom:6px;right:6px;border-left:none;border-top:none}
+.compass{
+  position:absolute;top:10px;right:10px;width:44px;height:44px;z-index:4;opacity:.55;
+}
+.compass svg{width:100%;height:100%}
+
+.map-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.route-line{
+  fill:none;stroke:var(--route);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:1000;stroke-dashoffset:1000;
+  filter:drop-shadow(0 1px 2px rgba(139,69,19,.3));
+}
+.route-line.drawn{animation:drawRoute 2.4s var(--ease) forwards}
+@keyframes drawRoute{to{stroke-dashoffset:0}}
+.route-line.glow{stroke:var(--route-glow);stroke-width:1;opacity:.4;stroke-dasharray:6 8}
+
+/* ── Pins ── */
+.pins{position:absolute;inset:0;z-index:3}
+.pin{
+  position:absolute;transform:translate(-50%,-100%);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  opacity:0;transition:opacity .5s var(--ease),transform .3s var(--ease);
+  -webkit-tap-highlight-color:transparent;background:none;border:none;padding:0;
+}
+.pin.show{opacity:1}
+.pin.active .pin-head{transform:scale(1.15)}
+.pin.visited .pin-head{background:var(--stamp);border-color:var(--stamp)}
+.pin-head{
+  width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+  background:var(--route);border:2px solid var(--ink);transition:transform .25s,background .3s;
+  box-shadow:0 2px 6px rgba(44,24,16,.35);
+}
+.pin-label{
+  font-family:'IM Fell English',serif;font-size:.65rem;color:var(--ink);
+  white-space:nowrap;text-shadow:0 0 4px var(--parchment),0 0 8px var(--parchment);
+  transform:rotate(0deg);pointer-events:none;
+}
+.pin-pulse{
+  position:absolute;top:50%;left:50%;width:30px;height:30px;margin:-15px 0 0 -15px;
+  border-radius:50%;border:1px solid var(--route);opacity:0;pointer-events:none;
+}
+.pin.show:not(.visited) .pin-pulse{animation:pinPulse 2s ease infinite}
+@keyframes pinPulse{0%,100%{transform:scale(.5);opacity:0}50%{transform:scale(1.2);opacity:.5}}
+
+/* ── Passport strip ── */
+.passport{
+  display:flex;gap:.5rem;padding:.75rem 1rem;overflow-x:auto;scrollbar-width:none;
+  border-top:1px dashed var(--ink-soft);background:rgba(240,226,196,.6);
+}
+.passport::-webkit-scrollbar{display:none}
+.passport-slot{
+  flex:0 0 52px;height:52px;border:1px dashed var(--ink-soft);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;font-size:.55rem;
+  color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;
+  position:relative;overflow:hidden;
+}
+.passport-slot.filled{border-style:solid;border-color:var(--stamp)}
+.stamp-mark{
+  position:absolute;inset:2px;border:2px solid var(--stamp);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IM Fell English',serif;font-size:.5rem;color:var(--stamp);
+  transform:rotate(-8deg) scale(1.4);opacity:0;
+}
+.stamp-mark.appear{animation:stampAppear .6s var(--ease) forwards}
+@keyframes stampAppear{to{transform:rotate(-8deg) scale(1);opacity:.75}}
+
+/* ── Journal hint ── */
+.hint{
+  text-align:center;padding:.5rem 1rem .75rem;font-size:.72rem;color:var(--ink-soft);
+  font-style:italic;transition:opacity .4s;
+}
+.hint.done{opacity:0;height:0;padding:0;overflow:hidden}
+
+/* ── Memory modal (ticket card) ── */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:200;background:rgba(26,18,8,.65);
+  display:flex;align-items:flex-end;justify-content:center;padding:1rem;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
+}
+.modal-backdrop.open{opacity:1;visibility:visible}
+.ticket{
+  width:100%;max-width:400px;background:var(--parchment);border-radius:4px;
+  box-shadow:var(--shadow);transform:translateY(100%);transition:transform .5s var(--ease);
+  position:relative;overflow:hidden;
+}
+.modal-backdrop.open .ticket{transform:translateY(0)}
+.ticket-notch{position:absolute;top:50%;width:14px;height:14px;background:#1a1208;border-radius:50%;transform:translateY(-50%)}
+.ticket-notch.left{left:-7px}.ticket-notch.right{right:-7px}
+.ticket-header{
+  padding:1.25rem 1.25rem .75rem;border-bottom:1px dashed var(--ink-soft);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;
+}
+.ticket-header h3{font-family:'IM Fell English',serif;font-size:1.35rem;font-weight:400}
+.ticket-date{font-size:.7rem;color:var(--ink-soft);letter-spacing:.08em;white-space:nowrap;margin-top:.2rem}
+.ticket-body{padding:1rem 1.25rem 1.25rem}
+.ticket-photo{
+  width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:2px;margin-bottom:1rem;
+  border:1px solid var(--ink-soft);display:none;
+}
+.ticket-photo.show{display:block}
+.ticket-memory{font-size:.88rem;line-height:1.65;color:var(--ink)}
+.ticket-footer{
+  padding:.75rem 1.25rem;border-top:1px dashed var(--ink-soft);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.ticket-num{font-size:.65rem;color:var(--ink-soft);letter-spacing:.1em}
+.close-btn{
+  font-family:'Libre Baskerville',serif;font-size:.78rem;padding:.45rem 1rem;
+  border:1px solid var(--ink-soft);background:transparent;color:var(--ink);
+  cursor:pointer;border-radius:2px;transition:background .25s;
+}
+.close-btn:hover,.close-btn:focus-visible{background:var(--parchment-dark);outline:none}
+
+/* ── Finale ── */
+.finale{
+  position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 40%,#2a1e0e,#0f0a04);
+  opacity:0;visibility:hidden;transition:opacity .8s,visibility .8s;padding:2rem;text-align:center;
+}
+.finale.show{opacity:1;visibility:visible}
+.finale-inner{max-width:340px}
+.finale .compass-big{font-size:2.5rem;margin-bottom:1rem;opacity:.7}
+.finale h2{
+  font-family:'IM Fell English',serif;font-size:clamp(1.6rem,6vw,2.2rem);
+  color:var(--parchment);font-weight:400;line-height:1.3;margin-bottom:.75rem;
+}
+.finale p{font-size:.9rem;color:var(--parchment-dark);line-height:1.6;font-style:italic}
+.finale .hearts{margin-top:1.5rem;font-size:1.2rem;letter-spacing:.5rem;color:var(--gold);opacity:.6}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .route-line{stroke-dashoffset:0!important}
+  .pin{opacity:1!important}
+  .cover-stamp{animation:none;opacity:.85}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <div class="cover" id="cover">
+    <div class="cover-inner">
+      <div class="cover-stamp" aria-hidden="true">✦</div>
+      <h1 id="cover-title">Our Journey</h1>
+      <p class="sub" id="cover-sub">An anniversary map</p>
+      <button class="cover-btn" id="begin-btn" type="button">Unfold the map</button>
+    </div>
+  </div>
+
+  <main class="stage" id="stage" aria-hidden="true">
+    <header class="header">
+      <h2 id="map-title">Our Journey</h2>
+      <p class="meta" id="map-meta"></p>
+    </header>
+
+    <div class="map-wrap" id="map-wrap" role="img" aria-label="Vintage map of shared memories">
+      <div class="compass" aria-hidden="true">
+        <svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" stroke="#5c4030" stroke-width=".8"/>
+          <polygon points="22,4 24,20 22,22 20,20" fill="#7a1f1f"/>
+          <polygon points="22,40 24,24 22,22 20,24" fill="#5c4030"/>
+          <polygon points="4,22 20,24 22,22 20,20" fill="#5c4030"/>
+          <polygon points="40,22 24,24 22,22 24,20" fill="#5c4030"/>
+          <text x="22" y="14" text-anchor="middle" font-size="5" fill="#5c4030" font-family="serif">N</text>
+        </svg>
+      </div>
+      <svg class="map-svg" id="route-svg" aria-hidden="true"><path class="route-line glow" id="route-glow"/><path class="route-line" id="route-path"/></svg>
+      <div class="pins" id="pins"></div>
+    </div>
+
+    <p class="hint" id="hint">Tap each pin to collect a memory</p>
+
+    <div class="passport" id="passport" aria-label="Passport stamps collected"></div>
+  </main>
+
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <article class="ticket">
+      <div class="ticket-notch left" aria-hidden="true"></div>
+      <div class="ticket-notch right" aria-hidden="true"></div>
+      <header class="ticket-header">
+        <div><h3 id="modal-title"></h3><p class="ticket-date" id="modal-date"></p></div>
+      </header>
+      <div class="ticket-body">
+        <img class="ticket-photo" id="modal-photo" alt="">
+        <p class="ticket-memory" id="modal-memory"></p>
+      </div>
+      <footer class="ticket-footer">
+        <span class="ticket-num" id="modal-num"></span>
+        <button class="close-btn" id="close-btn" type="button">Continue journey</button>
+      </footer>
+    </article>
+  </div>
+
+  <div class="finale" id="finale" aria-hidden="true">
+    <div class="finale-inner">
+      <div class="compass-big" aria-hidden="true">🧭</div>
+      <h2 id="finale-msg">Wherever we go next...</h2>
+      <p id="finale-sub"></p>
+      <div class="hearts" aria-hidden="true">♥ ♥ ♥</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const EXPERIENCE = {
+  title: "Our Journey",
+  subtitle: "Alex & Jordan · 3 years together",
+  couple: "Alex & Jordan",
+  anniversary: "3 years",
+  locations: [
+    {
+      name: "First Coffee",
+      date: "March 2019",
+      memory: "You ordered something complicated. I pretended I wasn't nervous. The barista wrote your name wrong and we laughed until our cups went cold.",
+      x: 18, y: 72
+    },
+    {
+      name: "The Proposal Trail",
+      date: "June 2021",
+      memory: "Rain on the path, mud on our shoes, and you said yes before I finished the sentence. Best wrong turn we ever took.",
+      photo: "https://images.unsplash.com/photo-1518568814500-bf213f343d8f?w=600&q=80",
+      x: 38, y: 48
+    },
+    {
+      name: "Our First Home",
+      date: "September 2022",
+      memory: "Boxes everywhere, one working lamp, pizza on the floor. It wasn't perfect — it was ours.",
+      x: 58, y: 62
+    },
+    {
+      name: "Anniversary Sunset",
+      date: "Today",
+      memory: "Every pin on this map is proof: the best adventures aren't places. They're the person beside you.",
+      x: 78, y: 28
+    }
+  ],
+  finale: {
+    message: "Wherever we go next...",
+    submessage: "I'll choose the scenic route, as long as you're holding the map with me."
+  }
+};
+
+(function(){
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const visited = new Set();
+  let currentIdx = null;
+
+  const $ = id => document.getElementById(id);
+  const cover = $('cover'), stage = $('stage'), mapWrap = $('map-wrap');
+  const routePath = $('route-path'), routeGlow = $('route-glow');
+  const pinsEl = $('pins'), passport = $('passport'), modal = $('modal');
+  const hint = $('hint'), finale = $('finale');
+
+  $('cover-title').textContent = EXPERIENCE.title;
+  $('cover-sub').textContent = EXPERIENCE.subtitle;
+  $('map-title').textContent = EXPERIENCE.title;
+  $('map-meta').textContent = EXPERIENCE.couple + ' · ' + EXPERIENCE.anniversary;
+  $('finale-msg').textContent = EXPERIENCE.finale.message;
+  $('finale-sub').textContent = EXPERIENCE.finale.submessage;
+
+  EXPERIENCE.locations.forEach((_, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'passport-slot';
+    slot.dataset.idx = i;
+    slot.textContent = 'Stamp';
+    slot.setAttribute('aria-label', 'Stamp slot ' + (i + 1));
+    passport.appendChild(slot);
+  });
+
+  function buildRoute(){
+    const pts = EXPERIENCE.locations.map(l => {
+      const r = mapWrap.getBoundingClientRect();
+      return { x: l.x / 100 * r.width, y: l.y / 100 * r.height };
+    });
+    let d = 'M ' + pts[0].x + ' ' + pts[0].y;
+    for (let i = 1; i < pts.length; i++){
+      const prev = pts[i - 1], cur = pts[i];
+      const mx = (prev.x + cur.x) / 2, my = (prev.y + cur.y) / 2 - 20;
+      d += ' Q ' + mx + ' ' + my + ' ' + cur.x + ' ' + cur.y;
+    }
+    routePath.setAttribute('d', d);
+    routeGlow.setAttribute('d', d);
+    const len = routePath.getTotalLength();
+    routePath.style.strokeDasharray = len;
+    routePath.style.strokeDashoffset = reduced ? 0 : len;
+    routeGlow.style.strokeDasharray = len;
+    routeGlow.style.strokeDashoffset = reduced ? 0 : len;
+    if (!reduced) routePath.classList.add('drawn');
+  }
+
+  function renderPins(){
+    pinsEl.innerHTML = '';
+    EXPERIENCE.locations.forEach((loc, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'pin';
+      btn.type = 'button';
+      btn.style.left = loc.x + '%';
+      btn.style.top = loc.y + '%';
+      btn.setAttribute('aria-label', 'Visit ' + loc.name);
+      btn.innerHTML = '<span class="pin-pulse"></span><span class="pin-head"></span><span class="pin-label">' + loc.name + '</span>';
+      btn.addEventListener('click', () => openMemory(i));
+      pinsEl.appendChild(btn);
+    });
+  }
+
+  function revealPins(delay){
+    const pins = pinsEl.querySelectorAll('.pin');
+    pins.forEach((p, i) => {
+      setTimeout(() => p.classList.add('show'), reduced ? 0 : delay + i * 350);
+    });
+  }
+
+  function openMemory(idx){
+    const loc = EXPERIENCE.locations[idx];
+    currentIdx = idx;
+    $('modal-title').textContent = loc.name;
+    $('modal-date').textContent = loc.date;
+    $('modal-memory').textContent = loc.memory;
+    $('modal-num').textContent = 'Ticket #' + String(idx + 1).padStart(2, '0');
+    const photo = $('modal-photo');
+    if (loc.photo){
+      photo.src = loc.photo;
+      photo.alt = loc.name;
+      photo.classList.add('show');
+    } else {
+      photo.classList.remove('show');
+      photo.removeAttribute('src');
+    }
+    modal.hidden = false;
+    modal.classList.add('open');
+    pinsEl.querySelectorAll('.pin')[idx].classList.add('active');
+  }
+
+  function closeMemory(){
+    if (currentIdx === null) return;
+    const idx = currentIdx;
+    modal.classList.remove('open');
+    modal.hidden = true;
+    pinsEl.querySelectorAll('.pin')[idx].classList.remove('active');
+    if (!visited.has(idx)){
+      visited.add(idx);
+      const pin = pinsEl.querySelectorAll('.pin')[idx];
+      pin.classList.add('visited');
+      const slot = passport.querySelector('[data-idx="' + idx + '"]');
+      slot.classList.add('filled');
+      slot.innerHTML = '';
+      const mark = document.createElement('span');
+      mark.className = 'stamp-mark';
+      mark.textContent = EXPERIENCE.locations[idx].name.split(' ').map(w => w[0]).join('').slice(0, 3);
+      slot.appendChild(mark);
+      requestAnimationFrame(() => mark.classList.add('appear'));
+      if (visited.size === EXPERIENCE.locations.length) showFinale();
+    }
+    currentIdx = null;
+  }
+
+  function showFinale(){
+    hint.classList.add('done');
+    setTimeout(() => {
+      finale.classList.add('show');
+      finale.removeAttribute('aria-hidden');
+    }, reduced ? 100 : 800);
+  }
+
+  function begin(){
+    cover.classList.add('hidden');
+    stage.classList.add('visible');
+    stage.removeAttribute('aria-hidden');
+    requestAnimationFrame(() => {
+      buildRoute();
+      renderPins();
+      revealPins(reduced ? 0 : 2400);
+    });
+  }
+
+  $('begin-btn').addEventListener('click', begin);
+  $('close-btn').addEventListener('click', closeMemory);
+  modal.addEventListener('click', e => { if (e.target === modal) closeMemory(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeMemory();
+  });
+  window.addEventListener('resize', () => { if (stage.classList.contains('visible')) buildRoute(); });
+})();
+</script>
+</body>
+</html>

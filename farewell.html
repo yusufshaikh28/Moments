@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2a3a2e">
+<title>Last Day — Farewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root {
+  --chalk: #f0ebe0;
+  --chalk-dim: rgba(240, 235, 224, 0.55);
+  --board: #2a3a2e;
+  --board-dark: #1e2a22;
+  --wood: #8b6914;
+  --wood-dark: #5c4510;
+  --paper: #f7f2e6;
+  --paper-line: #c8d8e8;
+  --paper-margin: #e8a0a0;
+  --ink: #2c2416;
+  --ink-soft: #5a5040;
+  --yearbook-cover: #1a2f4a;
+  --yearbook-gold: #c9a84c;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-turn: cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  color: var(--chalk);
+  background: var(--board-dark);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+/* ── Scene container ── */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.8s var(--ease), visibility 0.8s;
+  padding: 1rem;
+}
+
+.scene.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ══════════════════════════════════════
+   SCENE 1 — CLASSROOM
+   ══════════════════════════════════════ */
+.classroom {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 220, 150, 0.08), transparent 55%),
+    linear-gradient(180deg, #3d4a38 0%, #2a3a2e 40%, #1e2a22 100%);
+}
+
+.classroom-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--wood-dark) 0px,
+    var(--wood) 2px,
+    var(--wood-dark) 4px,
+    var(--wood) 80px
+  );
+  border-top: 4px solid #3d2e10;
+}
+
+.classroom-wall {
+  position: absolute;
+  inset: 0 0 28% 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 30%),
+    #c8b898;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+.window {
+  position: absolute;
+  top: 8%;
+  right: 6%;
+  width: min(90px, 22vw);
+  height: min(110px, 26vw);
+  background: linear-gradient(160deg, #87ceeb 0%, #b8dff5 50%, #e8f4fc 100%);
+  border: 6px solid #f5f0e8;
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.4), 2px 4px 12px rgba(0,0,0,0.2);
+}
+
+.window::before, .window::after {
+  content: '';
+  position: absolute;
+  background: #f5f0e8;
+}
+
+.window::before {
+  top: 0; bottom: 0; left: 50%; width: 4px;
+  transform: translateX(-50%);
+}
+
+.window::after {
+  left: 0; right: 0; top: 50%; height: 4px;
+  transform: translateY(-50%);
+}
+
+.clock {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #f5f0e8;
+  border: 3px solid #8b7355;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.clock::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 2px; height: 16px;
+  background: #333;
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(45deg);
+}
+
+.clock::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 2px; height: 12px;
+  background: #555;
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(120deg);
+}
+
+.blackboard-wrap {
+  position: relative;
+  z-index: 5;
+  width: min(340px, 92vw);
+  margin-top: -8vh;
+}
+
+.blackboard-frame {
+  background: linear-gradient(145deg, #6b5344, #4a3828);
+  padding: 10px 12px 14px;
+  border-radius: 4px;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.blackboard {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.03), transparent 50%),
+    var(--board);
+  border-radius: 2px;
+  padding: 1.5rem 1.25rem 1.75rem;
+  min-height: 220px;
+  position: relative;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.blackboard::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+.chalk-tray {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px 0;
+}
+
+.chalk-piece {
+  width: 28px;
+  height: 8px;
+  border-radius: 2px;
+  transform: rotate(-8deg);
+}
+
+.chalk-piece.white { background: #e8e4dc; }
+.chalk-piece.yellow { background: #e8d878; transform: rotate(4deg); }
+.chalk-piece.pink { background: #e8a0b0; transform: rotate(-15deg); }
+
+.chalk-line {
+  font-family: 'Permanent Marker', cursive;
+  color: var(--chalk);
+  font-size: clamp(1.1rem, 4.5vw, 1.35rem);
+  line-height: 1.55;
+  text-shadow: 0 0 1px rgba(240,235,224,0.3);
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.chalk-line.visible {
+  animation: chalkAppear 0.6s var(--ease) forwards;
+}
+
+@keyframes chalkAppear {
+  0% { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  60% { opacity: 0.85; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.chalk-line.writing {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  opacity: 1;
+  animation: chalkWrite 1.8s steps(30) forwards;
+}
+
+@keyframes chalkWrite {
+  to { width: 100%; }
+}
+
+.chalk-dust {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--chalk-dim);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chalk-dust.float {
+  animation: dustFloat 1.2s ease forwards;
+}
+
+@keyframes dustFloat {
+  0% { opacity: 0.6; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.3); }
+}
+
+.desk-row {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 3;
+}
+
+.desk {
+  width: 56px;
+  height: 36px;
+  background: linear-gradient(180deg, #a08050, #7a6038);
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.desk::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 4px;
+  right: 4px;
+  height: 14px;
+  background: #6a5030;
+}
+
+.notebook-prop {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-6deg);
+  width: 32px;
+  height: 24px;
+  background: var(--paper);
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+}
+
+.notebook-prop::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: var(--paper-margin);
+}
+
+.tap-hint {
+  position: absolute;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  opacity: 0;
+  animation: hintPulse 2s ease 3s infinite;
+  transition: opacity 0.5s;
+  z-index: 10;
+}
+
+.tap-hint.show { opacity: 1; }
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+/* ══════════════════════════════════════
+   SCENE 2 — BELL
+   ══════════════════════════════════════ */
+.bell-scene {
+  background: radial-gradient(ellipse at 50% 30%, #3d4a38, #1e2a22);
+}
+
+.bell-container {
+  position: relative;
+  text-align: center;
+}
+
+.school-bell {
+  width: 100px;
+  height: 90px;
+  margin: 0 auto 2rem;
+  position: relative;
+  transform-origin: top center;
+}
+
+.school-bell svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+}
+
+.school-bell.ringing {
+  animation: bellSwing 0.5s ease-in-out 6;
+}
+
+@keyframes bellSwing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(18deg); }
+  75% { transform: rotate(-18deg); }
+}
+
+.bell-text {
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(1.4rem, 6vw, 1.8rem);
+  color: var(--chalk);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.bell-text.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.bell-sub {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--chalk-dim);
+  opacity: 0;
+  transition: opacity 0.6s 0.3s;
+}
+
+.bell-sub.show { opacity: 1; }
+
+/* ══════════════════════════════════════
+   SCENE 3–5 — NOTEBOOK / YEARBOOK
+   ══════════════════════════════════════ */
+.book-scene {
+  background:
+    radial-gradient(ellipse at 50% 80%, rgba(0,0,0,0.35), transparent 60%),
+    linear-gradient(160deg, #4a3828, #2a2018);
+}
+
+.book-stage {
+  position: relative;
+  width: min(360px, 94vw);
+  height: min(520px, 78vh);
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
+}
+
+.book-shadow {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 24px;
+  background: rgba(0,0,0,0.5);
+  filter: blur(16px);
+  border-radius: 50%;
+}
+
+.notebook {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 1s var(--ease-turn);
+}
+
+.notebook.closed {
+  transform: rotateX(8deg);
+}
+
+.notebook.open {
+  transform: rotateX(0deg);
+}
+
+.notebook-cover {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1.2s var(--ease-turn);
+  z-index: 20;
+  cursor: pointer;
+}
+
+.notebook-cover.flipped {
+  transform: rotateY(-165deg);
+  pointer-events: none;
+}
+
+.cover-front, .cover-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 4px 12px 12px 4px;
+}
+
+.cover-front {
+  background: linear-gradient(135deg, #2a4a6a 0%, #1a3050 100%);
+  border: 2px solid #0f2038;
+  box-shadow: 4px 6px 20px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.cover-front::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.cover-back {
+  background: var(--paper);
+  transform: rotateY(180deg);
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+}
+
+.cover-title {
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(1.6rem, 7vw, 2rem);
+  color: var(--yearbook-gold);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.cover-school {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 235, 224, 0.7);
+  margin-bottom: 1.5rem;
+}
+
+.cover-name {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.1rem;
+  color: var(--chalk);
+  border-bottom: 2px solid var(--yearbook-gold);
+  padding-bottom: 4px;
+}
+
+.cover-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240,235,224,0.45);
+  animation: hintPulse 2s ease infinite;
+}
+
+.book-pages {
+  position: absolute;
+  inset: 4px 4px 4px 8px;
+  background: var(--paper);
+  border-radius: 2px 10px 10px 2px;
+  box-shadow: inset -3px 0 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  padding: 1.25rem 1.1rem;
+  background: var(--paper);
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 23px,
+      var(--paper-line) 23px,
+      var(--paper-line) 24px
+    );
+  opacity: 0;
+  visibility: hidden;
+  transform: rotateY(0deg);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: opacity 0.5s, visibility 0.5s, transform 0.9s var(--ease-turn);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 18px;
+  width: 1px;
+  background: var(--paper-margin);
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 5;
+}
+
+.page.turning-out {
+  transform: rotateY(-120deg);
+  z-index: 10;
+  box-shadow: -4px 2px 12px rgba(0,0,0,0.15);
+}
+
+.page-header {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  padding-left: 12px;
+}
+
+.page-date {
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  padding-left: 12px;
+}
+
+.page-body {
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: var(--ink);
+  padding-left: 12px;
+  padding-right: 4px;
+}
+
+.page-num {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 1rem;
+  font-size: 0.6rem;
+  color: var(--ink-soft);
+}
+
+/* Friends page */
+.friends-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-left: 12px;
+  max-height: calc(100% - 3rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.friend-card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed rgba(44, 36, 22, 0.15);
+}
+
+.friend-initial {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2a4a6a, #1a3050);
+  color: var(--yearbook-gold);
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.friend-name {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.friend-note {
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* Yearbook photos */
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  padding-left: 8px;
+  max-height: calc(100% - 3rem);
+  overflow-y: auto;
+}
+
+.photo-card {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #ddd;
+  aspect-ratio: 1;
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+  transform: rotate(var(--rot, 0deg));
+}
+
+.photo-card:nth-child(odd) { --rot: -2deg; }
+.photo-card:nth-child(even) { --rot: 1.5deg; }
+
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.35rem 0.4rem;
+  background: rgba(26, 48, 80, 0.75);
+  color: var(--chalk);
+  font-size: 0.55rem;
+  line-height: 1.3;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #d8d0c0, #c0b8a8);
+  font-size: 1.5rem;
+}
+
+.page-nav {
+  position: absolute;
+  bottom: -3rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.page-btn {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(240,235,224,0.3);
+  background: rgba(0,0,0,0.25);
+  color: var(--chalk);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.page-btn:hover, .page-btn:focus-visible {
+  background: rgba(0,0,0,0.45);
+  border-color: rgba(240,235,224,0.5);
+  outline: none;
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-size: 0.65rem;
+  color: var(--chalk-dim);
+  letter-spacing: 0.1em;
+}
+
+/* ══════════════════════════════════════
+   SCENE 6 — FINALE
+   ══════════════════════════════════════ */
+.finale-scene {
+  background: radial-gradient(ellipse at 50% 35%, #2a3a2e, #0f1510);
+  text-align: center;
+}
+
+.finale-board {
+  width: min(320px, 90vw);
+  background: var(--board);
+  border: 8px solid #5c4530;
+  border-radius: 4px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.finale-line {
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(1.5rem, 7vw, 2rem);
+  color: var(--chalk);
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.finale-line.show {
+  animation: chalkAppear 0.8s var(--ease) forwards;
+}
+
+.finale-line.second {
+  font-size: clamp(0.95rem, 4vw, 1.15rem);
+  color: var(--chalk-dim);
+  margin-top: 1.25rem;
+  font-family: 'Special Elite', monospace;
+}
+
+.finale-eraser {
+  position: absolute;
+  bottom: -6px;
+  right: 12px;
+  width: 40px;
+  height: 14px;
+  background: #c8b8a0;
+  border-radius: 2px;
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+}
+
+.replay-btn {
+  margin-top: 2.5rem;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.5rem;
+  border: 1px solid rgba(240,235,224,0.25);
+  background: transparent;
+  color: var(--chalk-dim);
+  cursor: pointer;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.6s 2s, background 0.25s, color 0.25s;
+}
+
+.replay-btn.show { opacity: 1; }
+
+.replay-btn:hover, .replay-btn:focus-visible {
+  background: rgba(240,235,224,0.1);
+  color: var(--chalk);
+  outline: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .chalk-line.writing { animation: none; width: 100%; opacity: 1; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- SCENE 1: Classroom -->
+  <section class="scene classroom active" id="scene-classroom" aria-label="Classroom">
+    <div class="classroom-wall" aria-hidden="true">
+      <div class="window"></div>
+      <div class="clock"></div>
+    </div>
+    <div class="classroom-floor" aria-hidden="true"></div>
+
+    <div class="blackboard-wrap">
+      <div class="blackboard-frame">
+        <div class="blackboard" id="blackboard">
+          <div class="chalk-line" data-delay="0" id="chalk-1"></div>
+          <div class="chalk-line" data-delay="800" id="chalk-2"></div>
+          <div class="chalk-line writing" data-delay="1600" id="chalk-3"></div>
+          <div class="chalk-line" data-delay="3600" id="chalk-4"></div>
+        </div>
+        <div class="chalk-tray" aria-hidden="true">
+          <div class="chalk-piece white"></div>
+          <div class="chalk-piece yellow"></div>
+          <div class="chalk-piece pink"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="desk-row" aria-hidden="true">
+      <div class="desk"><div class="notebook-prop"></div></div>
+      <div class="desk"></div>
+      <div class="desk"><div class="notebook-prop"></div></div>
+    </div>
+
+    <p class="tap-hint" id="classroom-hint">Tap to continue</p>
+  </section>
+
+  <!-- SCENE 2: Bell -->
+  <section class="scene bell-scene" id="scene-bell" aria-label="School bell">
+    <div class="bell-container">
+      <div class="school-bell" id="school-bell" aria-hidden="true">
+        <svg viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 8 L58 4 L62 12" stroke="#8b7355" stroke-width="2" fill="none"/>
+          <ellipse cx="50" cy="45" rx="38" ry="32" fill="#c9a84c" stroke="#8b6914" stroke-width="2"/>
+          <ellipse cx="50" cy="42" rx="34" ry="28" fill="#dbb85c"/>
+          <circle cx="50" cy="72" r="8" fill="#8b6914"/>
+          <rect x="46" y="4" width="8" height="10" rx="2" fill="#6b5344"/>
+        </svg>
+      </div>
+      <p class="bell-text" id="bell-text">Last bell.</p>
+      <p class="bell-sub" id="bell-sub">Time to pack up the memories.</p>
+    </div>
+  </section>
+
+  <!-- SCENE 3–5: Notebook / Yearbook -->
+  <section class="scene book-scene" id="scene-book" aria-label="Notebook and yearbook">
+    <div class="book-stage">
+      <div class="book-shadow" aria-hidden="true"></div>
+      <div class="notebook closed" id="notebook">
+        <div class="notebook-cover" id="notebook-cover">
+          <div class="cover-front">
+            <p class="cover-school" id="cover-school"></p>
+            <h2 class="cover-title">Last Day<br>Notebook</h2>
+            <p class="cover-name" id="cover-name"></p>
+            <span class="cover-hint">Tap to open</span>
+          </div>
+          <div class="cover-back" aria-hidden="true"></div>
+        </div>
+        <div class="book-pages" id="book-pages"></div>
+      </div>
+      <div class="page-nav" id="page-nav" style="display:none">
+        <button class="page-btn" id="btn-prev" disabled>← Back</button>
+        <span class="page-indicator" id="page-indicator"></span>
+        <button class="page-btn" id="btn-next">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 6: Finale -->
+  <section class="scene finale-scene" id="scene-finale" aria-label="Farewell message">
+    <div class="finale-board">
+      <p class="finale-line" id="finale-1">Class dismissed.</p>
+      <p class="finale-line second" id="finale-2">But the memories aren't.</p>
+      <div class="finale-eraser" aria-hidden="true"></div>
+    </div>
+    <button class="replay-btn" id="replay-btn">Read again</button>
+  </section>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   EXPERIENCE — edit this object to personalize
+   ══════════════════════════════════════ */
+const EXPERIENCE = {
+  school: 'Riverside Academy',
+  recipient: 'Jordan',
+  memories: [
+    {
+      title: 'First day nerves',
+      date: 'September 2022',
+      text: 'You walked in late with the wrong classroom number on a crumpled schedule. We all thought you were brave. You thought you were doomed. Best wrong turn ever.'
+    },
+    {
+      title: 'The group project',
+      date: 'March 2023',
+      text: 'Three all-nighters, one exploded soda, and a presentation held together by hope and hot glue. We got a B+. Worth every minute.'
+    },
+    {
+      title: 'Senior skip day',
+      date: 'April 2024',
+      text: 'Technically we went to the park next to school. Technically we brought homework. Technically none of us opened a notebook. No regrets.'
+    },
+    {
+      title: 'Graduation rehearsal',
+      date: 'May 2024',
+      text: 'You cried during the practice walk. We pretended not to notice. Then we all cried on the real day anyway.'
+    }
+  ],
+  friends: [
+    { name: 'Sam', note: 'Kept every inside joke alive for four years straight.' },
+    { name: 'Riley', note: 'Shared notes, snacks, and secrets without asking.' },
+    { name: 'Casey', note: 'The one who always knew when to make us laugh.' },
+    { name: 'Morgan', note: 'Held the group together when things got hard.' },
+    { name: 'Alex', note: 'Proof that the best friendships start by accident.' }
+  ],
+  photos: [
+    { src: '', caption: 'Homeroom, day one', emoji: '📸' },
+    { src: '', caption: 'Prom night', emoji: '🎓' },
+    { src: '', caption: 'Final assembly', emoji: '🏫' },
+    { src: '', caption: 'One last lunch', emoji: '🍕' }
+  ]
+};
+
+/* ── State ── */
+const scenes = {
+  classroom: document.getElementById('scene-classroom'),
+  bell: document.getElementById('scene-bell'),
+  book: document.getElementById('scene-book'),
+  finale: document.getElementById('scene-finale')
+};
+
+let currentScene = 'classroom';
+let currentPage = 0;
+let totalPages = 0;
+let pages = [];
+let classroomReady = false;
+let bellDone = false;
+let coverOpen = false;
+
+/* ── Init ── */
+function init() {
+  document.title = 'Last Day — ' + EXPERIENCE.recipient;
+  document.getElementById('cover-school').textContent = EXPERIENCE.school;
+  document.getElementById('cover-name').textContent = EXPERIENCE.recipient;
+
+  const chalkLines = [
+    EXPERIENCE.school,
+    'Last Day',
+    'For ' + EXPERIENCE.recipient,
+    '— class of forever —'
+  ];
+
+  chalkLines.forEach((text, i) => {
+    const el = document.getElementById('chalk-' + (i + 1));
+    if (el) el.textContent = text;
+  });
+
+  buildPages();
+  startClassroomAnimation();
+  bindEvents();
+}
+
+function buildPages() {
+  const container = document.getElementById('book-pages');
+  container.innerHTML = '';
+  pages = [];
+
+  EXPERIENCE.memories.forEach((mem, i) => {
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.dataset.type = 'memory';
+    page.innerHTML =
+      '<p class="page-header">' + escapeHtml(mem.title) + '</p>' +
+      '<p class="page-date">' + escapeHtml(mem.date) + '</p>' +
+      '<p class="page-body">' + escapeHtml(mem.text) + '</p>' +
+      '<span class="page-num">' + (i + 1) + '</span>';
+    container.appendChild(page);
+    pages.push(page);
+  });
+
+  const friendsPage = document.createElement('div');
+  friendsPage.className = 'page';
+  friendsPage.dataset.type = 'friends';
+  let friendsHtml = '<p class="page-header">Signed by your crew</p><div class="friends-grid">';
+  EXPERIENCE.friends.forEach(f => {
+    friendsHtml +=
+      '<div class="friend-card">' +
+        '<div class="friend-initial">' + escapeHtml(f.name.charAt(0).toUpperCase()) + '</div>' +
+        '<div><p class="friend-name">' + escapeHtml(f.name) + '</p>' +
+        '<p class="friend-note">' + escapeHtml(f.note) + '</p></div>' +
+      '</div>';
+  });
+  friendsHtml += '</div><span class="page-num">♥</span>';
+  friendsPage.innerHTML = friendsHtml;
+  container.appendChild(friendsPage);
+  pages.push(friendsPage);
+
+  const yearbookPage = document.createElement('div');
+  yearbookPage.className = 'page';
+  yearbookPage.dataset.type = 'yearbook';
+  let photosHtml = '<p class="page-header">Yearbook moments</p><div class="photo-grid">';
+  EXPERIENCE.photos.forEach(p => {
+    photosHtml += '<div class="photo-card">';
+    if (p.src) {
+      photosHtml += '<img src="' + escapeAttr(p.src) + '" alt="' + escapeAttr(p.caption) + '" loading="lazy">';
+    } else {
+      photosHtml += '<div class="photo-placeholder">' + (p.emoji || '📷') + '</div>';
+    }
+    photosHtml += '<p class="photo-caption">' + escapeHtml(p.caption) + '</p></div>';
+  });
+  photosHtml += '</div><span class="page-num">★</span>';
+  yearbookPage.innerHTML = photosHtml;
+  container.appendChild(yearbookPage);
+  pages.push(yearbookPage);
+
+  totalPages = pages.length;
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function escapeAttr(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
+/* ── Classroom chalk animation ── */
+function startClassroomAnimation() {
+  const lines = document.querySelectorAll('#blackboard .chalk-line');
+  const hint = document.getElementById('classroom-hint');
+  let maxDelay = 0;
+
+  lines.forEach(line => {
+    const delay = parseInt(line.dataset.delay, 10) || 0;
+    maxDelay = Math.max(maxDelay, delay + (line.classList.contains('writing') ? 1800 : 600));
+    setTimeout(() => {
+      line.classList.add('visible');
+      spawnChalkDust(line);
+    }, delay);
+  });
+
+  setTimeout(() => {
+    classroomReady = true;
+    hint.classList.add('show');
+  }, maxDelay + 400);
+}
+
+function spawnChalkDust(el) {
+  const board = document.getElementById('blackboard');
+  const rect = el.getBoundingClientRect();
+  const boardRect = board.getBoundingClientRect();
+  for (let i = 0; i < 4; i++) {
+    const dust = document.createElement('span');
+    dust.className = 'chalk-dust';
+    dust.style.left = (rect.left - boardRect.left + Math.random() * rect.width) + 'px';
+    dust.style.top = (rect.bottom - boardRect.top - 4) + 'px';
+    board.appendChild(dust);
+    requestAnimationFrame(() => dust.classList.add('float'));
+    setTimeout(() => dust.remove(), 1300);
+  }
+}
+
+/* ── Scene transitions ── */
+function showScene(name) {
+  Object.keys(scenes).forEach(key => {
+    scenes[key].classList.toggle('active', key === name);
+  });
+  currentScene = name;
+}
+
+function goToBell() {
+  showScene('bell');
+  const bell = document.getElementById('school-bell');
+  const bellText = document.getElementById('bell-text');
+  const bellSub = document.getElementById('bell-sub');
+
+  requestAnimationFrame(() => {
+    bell.classList.add('ringing');
+    if (navigator.vibrate) navigator.vibrate([80, 60, 80, 60, 120]);
+  });
+
+  setTimeout(() => {
+    bellText.classList.add('show');
+    bellSub.classList.add('show');
+  }, 600);
+
+  setTimeout(() => {
+    bellDone = true;
+    goToBook();
+  }, 3200);
+}
+
+function goToBook() {
+  showScene('book');
+  const notebook = document.getElementById('notebook');
+  setTimeout(() => notebook.classList.remove('closed'), 300);
+  setTimeout(() => notebook.classList.add('open'), 500);
+}
+
+function openCover() {
+  if (coverOpen) return;
+  coverOpen = true;
+  document.getElementById('notebook-cover').classList.add('flipped');
+  document.getElementById('page-nav').style.display = 'flex';
+  setTimeout(() => showPage(0), 600);
+}
+
+function showPage(index) {
+  if (index < 0 || index >= totalPages) return;
+
+  const prev = pages[currentPage];
+  const next = pages[index];
+
+  if (prev && prev !== next) {
+    prev.classList.add('turning-out');
+    setTimeout(() => {
+      prev.classList.remove('active', 'turning-out');
+    }, 900);
+  }
+
+  setTimeout(() => {
+    pages.forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+      if (i !== index) p.classList.remove('turning-out');
+    });
+    currentPage = index;
+    updateNav();
+  }, prev && prev !== next ? 200 : 0);
+
+  if (index === totalPages - 1) {
+    setTimeout(() => {
+      document.getElementById('btn-next').textContent = 'Finish →';
+    }, 500);
+  }
+}
+
+function updateNav() {
+  document.getElementById('btn-prev').disabled = currentPage === 0;
+  document.getElementById('page-indicator').textContent =
+    (currentPage + 1) + ' / ' + totalPages;
+}
+
+function nextPage() {
+  if (currentPage < totalPages - 1) {
+    showPage(currentPage + 1);
+  } else {
+    goToFinale();
+  }
+}
+
+function prevPage() {
+  if (currentPage > 0) showPage(currentPage - 1);
+}
+
+function goToFinale() {
+  showScene('finale');
+  setTimeout(() => document.getElementById('finale-1').classList.add('show'), 400);
+  setTimeout(() => document.getElementById('finale-2').classList.add('show'), 1400);
+  setTimeout(() => document.getElementById('replay-btn').classList.add('show'), 2400);
+}
+
+function replay() {
+  classroomReady = false;
+  bellDone = false;
+  coverOpen = false;
+  currentPage = 0;
+
+  document.getElementById('classroom-hint').classList.remove('show');
+  document.getElementById('school-bell').classList.remove('ringing');
+  document.getElementById('bell-text').classList.remove('show');
+  document.getElementById('bell-sub').classList.remove('show');
+  document.getElementById('notebook-cover').classList.remove('flipped');
+  document.getElementById('notebook').classList.add('closed');
+  document.getElementById('notebook').classList.remove('open');
+  document.getElementById('page-nav').style.display = 'none';
+  document.getElementById('btn-next').textContent = 'Next →';
+  document.getElementById('finale-1').classList.remove('show');
+  document.getElementById('finale-2').classList.remove('show');
+  document.getElementById('replay-btn').classList.remove('show');
+
+  pages.forEach(p => p.classList.remove('active', 'turning-out'));
+
+  document.querySelectorAll('#blackboard .chalk-line').forEach(l => l.classList.remove('visible'));
+  document.querySelectorAll('.chalk-dust').forEach(d => d.remove());
+
+  showScene('classroom');
+  startClassroomAnimation();
+}
+
+/* ── Events ── */
+function bindEvents() {
+  scenes.classroom.addEventListener('click', () => {
+    if (classroomReady) goToBell();
+  });
+
+  document.getElementById('notebook-cover').addEventListener('click', openCover);
+
+  document.getElementById('btn-next').addEventListener('click', nextPage);
+  document.getElementById('btn-prev').addEventListener('click', prevPage);
+
+  document.getElementById('replay-btn').addEventListener('click', replay);
+
+  document.addEventListener('keydown', e => {
+    if (currentScene === 'classroom' && classroomReady && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      goToBell();
+    }
+    if (currentScene === 'book' && coverOpen) {
+      if (e.key === 'ArrowRight') nextPage();
+      if (e.key === 'ArrowLeft') prevPage();
+    }
+  });
+}
+
+init();
+</script>
+</body>
+</html>
