@@ -41,6 +41,25 @@
     object-position: center;
   }
 }
+    .video-sound {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 5;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      padding: .65rem .9rem;
+      background: rgba(10,10,15,.72);
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .video-sound:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    @media (max-width: 768px) {
+      .video-sound { right: .75rem; bottom: .75rem; font-size: .85rem; }
+    }
   </style>
 </head>
 <body>
@@ -179,6 +198,9 @@
               ▶
             </button>
           </div>
+
+          <button type="button" class="video-sound" id="video-sound"
+            aria-label="Turn sound on" aria-pressed="false">🔇 Sound on</button>
 
         </div>
       </div>
@@ -518,5 +540,23 @@
 
   <script src="script.js"></script>
 
+  <script>
+    (function () {
+      const video = document.getElementById('promo-video');
+      const soundButton = document.getElementById('video-sound');
+      if (!video || !soundButton) return;
+      soundButton.addEventListener('click', function () {
+        video.muted = false;
+        video.volume = 1;
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(function () {});
+        }
+        soundButton.setAttribute('aria-pressed', 'true');
+        soundButton.setAttribute('aria-label', 'Turn sound off');
+        soundButton.textContent = '🔊 Sound on';
+      });
+    })();
+  </script>
 </body>
 </html>
