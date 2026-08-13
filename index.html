@@ -21,7 +21,29 @@
 
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
+
   <title>Moment — Make it an experience</title>
+
+  <!-- MOBILE PROMO VIDEO FIX ONLY -->
+  <style>
+    @media (max-width: 768px) {
+      #promo .video-frame {
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        height: auto;
+        overflow: hidden;
+      }
+
+      #promo #promo-video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 9 / 16;
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -29,15 +51,25 @@
   <header class="nav" id="nav">
     <div class="nav__inner">
       <a href="#" class="nav__logo" data-brand>Moment</a>
-      <button class="nav__toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+
+      <button
+        class="nav__toggle"
+        id="nav-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
+
       <nav class="nav__menu" id="nav-menu">
         <a href="#experiences" class="nav__link">Experiences</a>
         <a href="#how-it-works" class="nav__link">How it works</a>
-        <a href="create.html" class="nav__link nav__link--cta" data-order-link>Create yours</a>
+        <a href="create.html" class="nav__link nav__link--cta" data-order-link>
+          Create yours
+        </a>
       </nav>
     </div>
   </header>
@@ -57,25 +89,50 @@
             Don't just send a message.<br>
             Make it an <em>experience.</em>
           </h1>
+
           <p class="hero__sub">
             Personalized digital experiences made for the people who matter.
           </p>
+
           <div class="hero__ctas">
-            <a href="create.html" class="btn btn--primary" data-order-link>Create Yours →</a>
-            <a href="#experiences" class="btn btn--ghost">See Examples</a>
+            <a href="create.html" class="btn btn--primary" data-order-link>
+              Create Yours →
+            </a>
+
+            <a href="#experiences" class="btn btn--ghost">
+              See Examples
+            </a>
           </div>
         </div>
 
         <div class="hero__visual" id="hero-visual" aria-hidden="true">
           <div class="hero__card-float"></div>
-          <div class="hero__memory hero__memory--1">our song 🎵</div>
-          <div class="hero__memory hero__memory--2">that trip ✈️</div>
-          <div class="hero__memory hero__memory--3">3am talks</div>
-          <div class="hero__memory hero__memory--4">inside joke 😂</div>
+
+          <div class="hero__memory hero__memory--1">
+            our song 🎵
+          </div>
+
+          <div class="hero__memory hero__memory--2">
+            that trip ✈️
+          </div>
+
+          <div class="hero__memory hero__memory--3">
+            3am talks
+          </div>
+
+          <div class="hero__memory hero__memory--4">
+            inside joke 😂
+          </div>
+
           <div class="hero__phone">
             <div class="hero__phone-notch"></div>
+
             <div class="hero__phone-screen">
-              <span class="hero__phone-text">For you,<br>with everything I never said.</span>
+              <span class="hero__phone-text">
+                For you,<br>
+                with everything I never said.
+              </span>
+
               <div class="hero__phone-line"></div>
               <div class="hero__phone-line hero__phone-line--short"></div>
               <div class="hero__phone-line"></div>
@@ -88,67 +145,118 @@
     <!-- 3. PROMO VIDEO -->
     <section class="section video-section" id="promo">
       <div class="container">
-        <h2 class="section-title reveal">See what it feels like.</h2>
+
+        <h2 class="section-title reveal">
+          See what it feels like.
+        </h2>
+
         <div class="video-frame reveal reveal-delay-1">
-          <video id="promo-video" playsinline muted preload="metadata" poster="assets/promo-poster.jpg">
-            <source src="assets/promo.mp4" type="video/mp4">
+
+          <video
+            id="promo-video"
+            playsinline
+            muted
+            preload="metadata"
+            poster="assets/promo-poster.jpg"
+          >
+            <!-- MOBILE -->
+            <source
+              src="assets/mobile.mp4"
+              media="(max-width: 768px)"
+              type="video/mp4"
+            >
+
+            <!-- DESKTOP -->
+            <source
+              src="assets/promo.mp4"
+              type="video/mp4"
+            >
           </video>
+
           <div class="video-play" id="video-play">
-            <button class="video-play__btn" aria-label="Play video">▶</button>
+            <button
+              class="video-play__btn"
+              aria-label="Play video"
+            >
+              ▶
+            </button>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- MOBILE HERO VIDEO -->
-    <video
-      class="hero-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      aria-label="Moment promotional video"
-    >
-      <source
-        src="assets/mobile.mp4"
-        type="video/mp4"
-      >
-    </video>
-
     <!-- 4. REAL EXPERIENCES / DEMOS -->
     <section class="section experiences" id="experiences">
       <div class="container">
-        <p class="section-label reveal">Real examples</p>
-        <h2 class="section-title reveal">Made for every kind of feeling.</h2>
+
+        <p class="section-label reveal">
+          Real examples
+        </p>
+
+        <h2 class="section-title reveal">
+          Made for every kind of feeling.
+        </h2>
+
         <p class="section-subtitle reveal reveal-delay-1">
           These aren't templates. Each one is built around a real story.
         </p>
+
         <div class="demo-grid" id="demo-grid"></div>
+
       </div>
     </section>
 
     <!-- 5. HOW IT WORKS -->
     <section class="section" id="how-it-works">
       <div class="container">
-        <p class="section-label reveal">Simple process</p>
-        <h2 class="section-title reveal">Three steps. One unforgettable experience.</h2>
+
+        <p class="section-label reveal">
+          Simple process
+        </p>
+
+        <h2 class="section-title reveal">
+          Three steps. One unforgettable experience.
+        </h2>
+
         <div class="steps">
+
           <article class="step reveal">
             <div class="step__num">01</div>
-            <h3 class="step__title">Tell us about them</h3>
-            <p class="step__text">Share their personality, memories, photos, inside jokes and what you want to say.</p>
+
+            <h3 class="step__title">
+              Tell us about them
+            </h3>
+
+            <p class="step__text">
+              Share their personality, memories, photos, inside jokes and what you want to say.
+            </p>
           </article>
+
           <article class="step reveal reveal-delay-1">
             <div class="step__num">02</div>
-            <h3 class="step__title">We create it</h3>
-            <p class="step__text">We turn your story into a personalized interactive experience.</p>
+
+            <h3 class="step__title">
+              We create it
+            </h3>
+
+            <p class="step__text">
+              We turn your story into a personalized interactive experience.
+            </p>
           </article>
+
           <article class="step reveal reveal-delay-2">
             <div class="step__num">03</div>
-            <h3 class="step__title">Send it</h3>
-            <p class="step__text">Get your private link and QR/share card. Send it to them.</p>
+
+            <h3 class="step__title">
+              Send it
+            </h3>
+
+            <p class="step__text">
+              Get your private link and QR/share card. Send it to them.
+            </p>
           </article>
+
         </div>
       </div>
     </section>
@@ -156,19 +264,34 @@
     <!-- 6. OCCASIONS -->
     <section class="section" id="occasions">
       <div class="container">
-        <p class="section-label reveal">Occasions</p>
-        <h2 class="section-title reveal">Whatever the moment.</h2>
+
+        <p class="section-label reveal">
+          Occasions
+        </p>
+
+        <h2 class="section-title reveal">
+          Whatever the moment.
+        </h2>
+
         <div class="occasions-grid" id="occasions-grid"></div>
+
       </div>
     </section>
 
     <!-- 7. STORY → EXPERIENCE -->
     <section class="section story-transform" id="story-transform">
       <div class="container">
-        <p class="section-label reveal">The magic</p>
-        <h2 class="section-title reveal">You give the story. We create the experience.</h2>
+
+        <p class="section-label reveal">
+          The magic
+        </p>
+
+        <h2 class="section-title reveal">
+          You give the story. We create the experience.
+        </h2>
 
         <div class="story-transform__grid">
+
           <div class="story-panel story-panel--raw reveal">
             <p>She came into my life when I was lonely.</p>
             <p>She listens to all my problems.</p>
@@ -176,54 +299,115 @@
             <p>I never really told her how much she means to me...</p>
           </div>
 
-          <div class="story-arrow reveal reveal-delay-1" aria-hidden="true">
+          <div
+            class="story-arrow reveal reveal-delay-1"
+            aria-hidden="true"
+          >
             <span class="story-arrow__icon">↓</span>
           </div>
 
           <div class="story-panel story-panel--result reveal reveal-delay-2">
             <div class="story-experience-preview">
-              <span class="story-experience-preview__seal">💌</span>
-              <span class="story-experience-preview__title">For the one who stayed</span>
+
+              <span class="story-experience-preview__seal">
+                💌
+              </span>
+
+              <span class="story-experience-preview__title">
+                For the one who stayed
+              </span>
+
               <div class="story-experience-preview__line"></div>
-              <div class="story-experience-preview__line" style="width:50%"></div>
+
+              <div
+                class="story-experience-preview__line"
+                style="width:50%"
+              ></div>
+
             </div>
           </div>
+
         </div>
 
         <div class="story-labels reveal">
-          <span class="story-label">Raw memories</span>
-          <span class="story-label">Personalization</span>
-          <span class="story-label">Interactive experience</span>
+          <span class="story-label">
+            Raw memories
+          </span>
+
+          <span class="story-label">
+            Personalization
+          </span>
+
+          <span class="story-label">
+            Interactive experience
+          </span>
         </div>
+
       </div>
     </section>
 
     <!-- 8. WHY IT'S DIFFERENT -->
     <section class="section" id="why-different">
       <div class="container">
-        <p class="section-label reveal">Why us</p>
-        <h2 class="section-title reveal">Not another greeting card.</h2>
+
+        <p class="section-label reveal">
+          Why us
+        </p>
+
+        <h2 class="section-title reveal">
+          Not another greeting card.
+        </h2>
+
         <div class="benefits">
+
           <article class="benefit reveal">
             <div class="benefit__icon">✦</div>
-            <h3 class="benefit__title">Personal</h3>
-            <p class="benefit__text">Built around their memories, personality and your story.</p>
+
+            <h3 class="benefit__title">
+              Personal
+            </h3>
+
+            <p class="benefit__text">
+              Built around their memories, personality and your story.
+            </p>
           </article>
+
           <article class="benefit reveal reveal-delay-1">
             <div class="benefit__icon">◈</div>
-            <h3 class="benefit__title">Interactive</h3>
-            <p class="benefit__text">They don't just read it. They experience it.</p>
+
+            <h3 class="benefit__title">
+              Interactive
+            </h3>
+
+            <p class="benefit__text">
+              They don't just read it. They experience it.
+            </p>
           </article>
+
           <article class="benefit reveal reveal-delay-2">
             <div class="benefit__icon">◎</div>
-            <h3 class="benefit__title">Made for the moment</h3>
-            <p class="benefit__text">Every occasion can have its own world, style and interaction.</p>
+
+            <h3 class="benefit__title">
+              Made for the moment
+            </h3>
+
+            <p class="benefit__text">
+              Every occasion can have its own world, style and interaction.
+            </p>
           </article>
+
           <article class="benefit reveal reveal-delay-3">
             <div class="benefit__icon">⬡</div>
-            <h3 class="benefit__title">Shareable</h3>
-            <p class="benefit__text">Send a link, QR or digital card.</p>
+
+            <h3 class="benefit__title">
+              Shareable
+            </h3>
+
+            <p class="benefit__text">
+              Send a link, QR or digital card.
+            </p>
           </article>
+
         </div>
       </div>
     </section>
@@ -231,23 +415,49 @@
     <!-- 9. SOCIAL PROOF -->
     <section class="section testimonials" id="testimonials">
       <div class="container">
-        <p class="section-label reveal">What people say</p>
-        <h2 class="section-title reveal">More than a message.</h2>
-        <div class="testimonials-track" id="testimonials-track"></div>
+
+        <p class="section-label reveal">
+          What people say
+        </p>
+
+        <h2 class="section-title reveal">
+          More than a message.
+        </h2>
+
+        <div
+          class="testimonials-track"
+          id="testimonials-track"
+        ></div>
+
       </div>
     </section>
 
     <!-- 10. FINAL CTA -->
     <section class="section final-cta" id="cta">
-      <div class="final-cta__glow" aria-hidden="true"></div>
+
+      <div
+        class="final-cta__glow"
+        aria-hidden="true"
+      ></div>
+
       <div class="container">
-        <h2 class="section-title reveal">Someone you love deserves more than a forwarded message.</h2>
+
+        <h2 class="section-title reveal">
+          Someone you love deserves more than a forwarded message.
+        </h2>
+
         <p class="section-subtitle reveal reveal-delay-1">
           Tell us about them. We'll turn it into something they'll remember.
         </p>
-        <a href="create.html" class="btn btn--primary btn--large reveal reveal-delay-2" data-order-link>
+
+        <a
+          href="create.html"
+          class="btn btn--primary btn--large reveal reveal-delay-2"
+          data-order-link
+        >
           Create Your Experience →
         </a>
+
       </div>
     </section>
 
@@ -256,22 +466,59 @@
   <!-- 11. FOOTER -->
   <footer class="footer">
     <div class="container footer__inner">
+
       <div>
-        <div class="footer__brand" data-brand>Moment</div>
-        <p class="footer__tagline">Experiences made for someone.</p>
+        <div class="footer__brand" data-brand>
+          Moment
+        </div>
+
+        <p class="footer__tagline">
+          Experiences made for someone.
+        </p>
       </div>
+
       <div class="footer__links">
-        <a href="#experiences" class="footer__link">Experiences</a>
-        <a href="create.html" class="footer__link" data-order-link>Create yours</a>
-        <a href="#" class="footer__link" id="footer-instagram" target="_blank" rel="noopener noreferrer">Instagram</a>
+
+        <a
+          href="#experiences"
+          class="footer__link"
+        >
+          Experiences
+        </a>
+
+        <a
+          href="create.html"
+          class="footer__link"
+          data-order-link
+        >
+          Create yours
+        </a>
+
+        <a
+          href="#"
+          class="footer__link"
+          id="footer-instagram"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram
+        </a>
+
       </div>
-      <p class="footer__copy">© <span id="year"></span> <span data-brand>Moment</span></p>
+
+      <p class="footer__copy">
+        © <span id="year"></span>
+        <span data-brand>Moment</span>
+      </p>
+
     </div>
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+
   <script src="script.js"></script>
+
 </body>
 </html>
