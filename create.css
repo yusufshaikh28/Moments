@@ -7,7 +7,7 @@
 .create-main {
   min-height: calc(100vh - var(--nav-h) - 80px);
   padding-top: calc(var(--nav-h) + 1rem);
-  padding-bottom: 7rem; /* Spacing for sticky bottom bar */
+  padding-bottom: 7rem;
   display: flex;
   flex-direction: column;
 }
@@ -213,9 +213,6 @@
   line-height: 1.5;
   transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
   -webkit-appearance: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 }
 
 .form-control::placeholder {
@@ -244,7 +241,7 @@
   display: block;
 }
 
-/* STEP 1: Occasion Options Grid */
+/* Occasion Options Grid */
 .options-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -269,6 +266,7 @@
   transition: transform 0.25s var(--ease), border-color 0.25s, background 0.25s, box-shadow 0.25s;
   width: 100%;
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 .option-card:hover {
@@ -312,7 +310,7 @@
   line-height: 1.35;
 }
 
-/* Chips Grid (Relationships, Moods, Styles, Colors, Delivery) */
+/* Chips */
 .chips-grid {
   display: flex;
   flex-wrap: wrap;
@@ -333,6 +331,7 @@
   color: var(--text-muted);
   transition: all 0.2s var(--ease);
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 .chip-btn:hover {
@@ -353,93 +352,7 @@
   box-shadow: 0 0 12px var(--accent-glow);
 }
 
-/* Slider Group (Intensity) */
-.slider-group {
-  background: var(--bg-card);
-  padding: 1.25rem 1.5rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-}
-
-.slider-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.slider-header .form-label {
-  margin-bottom: 0;
-}
-
-.slider-val-badge {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--accent);
-  background: rgba(232, 168, 124, 0.12);
-  padding: 0.2rem 0.6rem;
-  border-radius: 99px;
-}
-
-.range-slider {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  margin-bottom: 0.75rem;
-}
-
-.range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 12px var(--accent-glow);
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.range-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-}
-
-.slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  font-weight: 500;
-}
-
-/* STEP 5: Media Upload & Previews */
-.media-package-notice {
-  background: rgba(155, 127, 232, 0.1);
-  border: 1px solid rgba(155, 127, 232, 0.25);
-  border-radius: var(--radius-md);
-  padding: 0.85rem 1rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-}
-
-.privacy-note {
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-/* STEP 7: Package Cards & Pricing Breakdown */
+/* Package Cards */
 .packages-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -462,6 +375,8 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s var(--ease);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .package-card:hover {
@@ -514,7 +429,7 @@
 .package-card__tagline {
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.35rem;
   line-height: 1.4;
   font-style: italic;
 }
@@ -538,6 +453,7 @@
   width: 100%;
   padding: 0.7rem 1rem;
   font-size: 0.85rem;
+  pointer-events: none;
 }
 
 .price-breakdown-card {
@@ -587,7 +503,7 @@
   font-size: 1.1rem;
 }
 
-/* STEP 9: Review Summary Card */
+/* Review */
 .review-card {
   display: flex;
   flex-direction: column;
@@ -627,47 +543,7 @@
   line-height: 1.4;
 }
 
-.btn-review-edit {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--accent-soft);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 0.35rem 0.75rem;
-  border-radius: 99px;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.btn-review-edit:hover {
-  background: var(--surface-hover);
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-
-.clear-responses-wrap {
-  text-align: center;
-}
-
-.btn-clear-responses {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  text-decoration: underline;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.btn-clear-responses:hover {
-  color: #ff6b6b;
-}
-
-/* STEP 10: Submit, Payment & Confirmation Views */
-.submit-action-box {
-  margin-top: 2rem;
-  max-width: 420px;
-  margin-inline: auto;
-}
-
+/* Submit / Confirmation */
 .btn--full {
   width: 100%;
 }
@@ -706,37 +582,6 @@
   color: var(--text-muted);
   margin-bottom: 1.5rem;
   line-height: 1.5;
-}
-
-.payment-amount-box {
-  background: var(--bg-elevated);
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  margin-bottom: 1.75rem;
-}
-
-.payment-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
-.payment-amount {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text);
-}
-
-.payment-notice-text {
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  margin-top: 1rem;
-  line-height: 1.45;
 }
 
 .confirmation-body {
@@ -806,7 +651,6 @@
   background: var(--rose);
 }
 
-/* Utility Animations & States */
 @keyframes slideDown {
   from { transform: translateY(-100%); }
   to { transform: translateY(0); }
@@ -816,7 +660,6 @@
   display: none !important;
 }
 
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   .form-step,
   .draft-banner,
@@ -830,144 +673,74 @@
   }
 }
 
-
-/* ============================================================
-   MEDIA COLLECTION VIA WHATSAPP
-   No file upload UI is used in the Moment order flow.
-   ============================================================ */
-
-.media-whatsapp-card {
-  margin-top: 1.5rem;
-  padding: 1.35rem;
-  border: 1px solid var(--border-color, rgba(255,255,255,.12));
-  border-radius: 18px;
-  background: var(--card-background, rgba(255,255,255,.035));
+/* Field hint */
+.field-hint {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin: -0.35rem 0 0.65rem;
+  line-height: 1.4;
 }
 
-.media-whatsapp-card__intro {
-  display: flex;
-  align-items: flex-start;
-  gap: .9rem;
+.create-page .create-main {
+  padding-bottom: 6.5rem;
 }
 
-.media-whatsapp-card__icon {
-  width: 2.6rem;
-  height: 2.6rem;
-  flex: 0 0 2.6rem;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: rgba(255,255,255,.07);
-  font-size: 1.25rem;
-}
-
-.media-whatsapp-card__intro h3 {
-  margin: 0 0 .35rem;
-}
-
-.media-whatsapp-card__intro p {
-  margin: 0;
-  line-height: 1.55;
-}
-
-.media-package-options {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: .75rem;
-  margin: 1.2rem 0;
-}
-
-.media-package-card {
-  display: flex;
-  flex-direction: column;
-  gap: .2rem;
-  padding: 1rem;
-  min-height: 100px;
-  border: 1px solid var(--border-color, rgba(255,255,255,.12));
-  border-radius: 14px;
-  background: rgba(255,255,255,.025);
-  transition: border-color .2s ease, background .2s ease, transform .2s ease;
-}
-
-.media-package-card--selected {
-  border-color: currentColor;
-  background: rgba(255,255,255,.08);
-  transform: translateY(-1px);
-}
-
-.media-package-card__name {
-  font-weight: 700;
-  letter-spacing: .04em;
-}
-
-.media-package-card__price {
-  font-weight: 700;
-}
-
-.media-package-card__detail {
-  margin-top: .25rem;
-  font-size: .86rem;
-  opacity: .72;
+/* Media comes after */
+.package-card__media-note {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin: 0.35rem 0 0.75rem;
   line-height: 1.35;
 }
 
-.media-whatsapp-card__selected,
-.media-whatsapp-card__action {
+.media-info-card {
   display: flex;
+  gap: 0.9rem;
   align-items: flex-start;
-  gap: .75rem;
-  padding: 1rem;
-  border-radius: 14px;
+  margin-top: 1.25rem;
+  padding: 1rem 1.15rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 1px rgba(232, 168, 124, 0.08);
 }
 
-.media-whatsapp-card__selected {
-  background: rgba(255,255,255,.055);
+.media-info-card__icon {
+  font-size: 1.35rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
-.media-whatsapp-card__check {
-  width: 1.7rem;
-  height: 1.7rem;
-  flex: 0 0 1.7rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: currentColor;
-  color: var(--background, #111);
-  font-weight: 800;
+.media-info-card__title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-soft);
+  margin: 0 0 0.25rem;
 }
 
-.media-whatsapp-card__selected strong {
-  display: block;
-  margin-bottom: .25rem;
-}
-
-.media-whatsapp-card__selected p,
-.media-whatsapp-card__action p {
+.media-info-card__text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
   margin: 0;
-  line-height: 1.5;
 }
 
-.media-whatsapp-card__action {
-  margin-top: .75rem;
-  display: block;
-  border: 1px dashed var(--border-color, rgba(255,255,255,.18));
+@media (max-width: 480px) {
+  .media-info-card {
+    padding: 0.9rem 1rem;
+  }
 }
-
-.media-whatsapp-card__action strong {
-  display: block;
-  margin-bottom: .3rem;
+.option-card,
+.chip-btn,
+.package-card,
+#btn-next,
+#btn-prev,
+#btn-submit-order {
+  pointer-events: auto !important;
+  cursor: pointer;
 }
-
-@media (max-width: 640px) {
-  .media-package-options {
-    grid-template-columns: 1fr;
-  }
-
-  .media-package-card {
-    min-height: auto;
-  }
-
-  .media-whatsapp-card {
-    padding: 1rem;
-  }
+.package-card__btn {
+  pointer-events: none;
 }
