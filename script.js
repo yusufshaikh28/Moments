@@ -9,7 +9,7 @@ const ORDER_FORM_URL = 'create.html';
 const INSTAGRAM_URL = 'https://instagram.com/yourhandle';
 
 const PROMO_VIDEO = {
-  src: 'assets/promo.mp4',
+  src: 'assets/assets/promo.mp4',
   poster: 'assets/promo-poster.jpg',
 };
 
