@@ -10,7 +10,7 @@ const INSTAGRAM_URL = 'https://instagram.com/yourhandle';
 
 const PROMO_VIDEO = {
   src: 'assets/assets/promo.mp4',
-  poster: 'assets/promo-poster.jpg',
+  poster: 'assets/assets/promo-poster.jpg',
 };
 
 const EXPERIENCES = {
